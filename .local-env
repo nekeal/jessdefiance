@@ -1,0 +1,4 @@
+POSTGRES_USER=jessdefiance
+POSTGRES_DB=jessdefiance
+POSTGRES_PASSWORD=jessdefiance
+COMPOSE_PROJECT_NAME=jessdefiance
