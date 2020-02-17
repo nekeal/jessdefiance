@@ -9,6 +9,7 @@ from .filters import PostFilterSet, DynamicSearchFilter
 class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
+    lookup_field = 'slug'
     filter_backends = (DjangoFilterBackend, DynamicSearchFilter)
     search_fields = ('title',)
     filterset_class = PostFilterSet
