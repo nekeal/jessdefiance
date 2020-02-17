@@ -1,9 +1,7 @@
-from datetime import datetime
-from typing import TYPE_CHECKING
-
 from django.db.models import Manager
+from django.utils import timezone
 
 
 class PostManager(Manager):  # type: ignore
     def published(self):
-        return self.filter(publish_at__lt=datetime.now(), published=True)
+        return self.filter(publish_at__lt=timezone.now(), published=True)
