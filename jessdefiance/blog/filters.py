@@ -1,7 +1,7 @@
 import django_filters
 from rest_framework import filters
 
-from .models import Post
+from .models import Post, Tag
 
 
 class DynamicSearchFilter(filters.SearchFilter):
@@ -14,6 +14,7 @@ class DynamicSearchFilter(filters.SearchFilter):
 
 
 class PostFilterSet(django_filters.FilterSet):
+    tag = django_filters.ModelMultipleChoiceFilter(queryset=Tag.objects.all(), field_name='tags')
 
     class Meta:
         model = Post

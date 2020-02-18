@@ -2,3 +2,4 @@ POSTGRES_USER=jessdefiance
 POSTGRES_DB=jessdefiance
 POSTGRES_PASSWORD=jessdefiance
 COMPOSE_PROJECT_NAME=jessdefiance
+SECRET_KEY=t3p62$fbg7^1u=ks1_!6uizv(sdts*k_u&^x7qui6x+gfy&)vt
