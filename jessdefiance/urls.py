@@ -21,6 +21,14 @@ from drf_yasg.views import get_schema_view
 
 from .blog.urls import router as blog_router
 
+schema_view = get_schema_view(openapi.Info(
+      title="Blog API",
+      default_version='v1',
+      description="API for personal blog",
+      license=openapi.License(name="GNU General Public License v3.0"),
+   ),)
+
+
 router = DefaultRouter()
 router.registry.extend(blog_router.registry)
 
