@@ -21,5 +21,6 @@ class PostFactory(factory.DjangoModelFactory):
     content = 'content'
     publish_at = factory.LazyFunction(lambda: timezone.now() - timedelta(days=1))
     published = True
+
     class Meta:
         model = Post
