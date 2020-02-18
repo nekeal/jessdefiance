@@ -8,3 +8,5 @@ djangorestframework==3.11.0
 drf-flex-fields==0.7.5
 django-filter==2.2.0
 drf-yasg==1.17.1
+djoser==2.0.3
+djangorestframework-simplejwt==4.4.0
