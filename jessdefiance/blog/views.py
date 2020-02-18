@@ -1,14 +1,22 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
+from rest_framework.filters import SearchFilter
 
-from .models import Post
-from .serializers import PostSerializer
 from .filters import PostFilterSet, DynamicSearchFilter
+from .models import Post, Tag
+from .serializers import PostSerializer, TagSerializer
+
+
+class TagViewSet(viewsets.ModelViewSet):
+    serializer_class = TagSerializer
+    queryset = Tag.objects.all()
+    filter_backends = (SearchFilter, )
+    search_fields = ('name', )
 
 
 class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
-    queryset = Post.objects.all()
+    queryset = Post.objects.published()
     lookup_field = 'slug'
     filter_backends = (DjangoFilterBackend, DynamicSearchFilter)
     search_fields = ('title',)
