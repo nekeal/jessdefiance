@@ -2,10 +2,11 @@ from typing import Any, List
 
 from rest_framework.routers import DefaultRouter
 
-from jessdefiance.blog.views import PostViewSet
+from .views import PostViewSet, TagViewSet
 
 router = DefaultRouter()
 router.register('posts', PostViewSet)
+router.register('tags', TagViewSet)
 
 urlpatterns: List[Any] = [
 

@@ -14,6 +14,13 @@ class CategoryChoices(Enum):
         return self.name
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=20)
+
+    def __str__(self) -> str:
+        return self.name
+
+
 class Post(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
@@ -23,5 +30,7 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     publish_at = models.DateTimeField()
     published = models.BooleanField(default=False)
+
+    tags = models.ManyToManyField(Tag, blank=True, related_name='posts')
 
     objects = PostManager()
