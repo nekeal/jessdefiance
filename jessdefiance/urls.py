@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from drf_yasg import openapi
 from rest_framework.routers import DefaultRouter
+from drf_yasg.views import get_schema_view
 
 from .blog.urls import router as blog_router
 
@@ -24,5 +26,6 @@ router.registry.extend(blog_router.registry)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include((router.urls, 'api')))
+    path('api/', include((router.urls, 'api'))),
+    path('docs/', schema_view.with_ui('redoc'))
 ]
