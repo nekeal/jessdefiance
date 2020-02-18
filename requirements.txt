@@ -7,3 +7,4 @@ psycopg2_binary==2.8.4
 djangorestframework==3.11.0
 drf-flex-fields==0.7.5
 django-filter==2.2.0
+drf-yasg==1.17.1
