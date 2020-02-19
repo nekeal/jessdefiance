@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'django_filters',
+    'easy_thumbnails',
     'jessdefiance.blog',
 ]
 
@@ -140,4 +141,10 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'thumbnail': {'size': (300, 300), 'crop': False},
+    },
 }

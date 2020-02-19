@@ -4,7 +4,14 @@ import factory
 from django.utils import timezone
 from django.utils.text import slugify
 
-from .models import Post, CategoryChoices, Tag
+from .models import Post, CategoryChoices, Tag, PostImage
+
+
+class PostImageFactory(factory.DjangoModelFactory):
+    image = factory.django.ImageField(width=1, height=1)
+
+    class Meta:
+        model = PostImage
 
 
 class TagFactory(factory.DjangoModelFactory):

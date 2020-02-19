@@ -2,6 +2,7 @@ from enum import Enum
 from typing import Tuple, List
 
 from django.db import models
+from easy_thumbnails.fields import ThumbnailerImageField
 
 from jessdefiance.blog.managers import PostManager
 
@@ -26,6 +27,11 @@ class Tag(models.Model):
         return self.name
 
 
+class PostImage(models.Model):
+    name = models.CharField(max_length=100, blank=True)
+    image = ThumbnailerImageField(upload_to='images')
+
+
 class Post(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
@@ -37,5 +43,6 @@ class Post(models.Model):
     published = models.BooleanField(default=False)
 
     tags = models.ManyToManyField(Tag, blank=True, related_name='posts')
+    images = models.ManyToManyField(PostImage, blank=True, related_name='posts')
 
     objects = PostManager()

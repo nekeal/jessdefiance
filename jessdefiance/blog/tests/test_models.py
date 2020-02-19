@@ -1,11 +1,10 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 import pytest
-
 from django.utils import timezone
 
-from jessdefiance.blog.factories import PostFactory
-from jessdefiance.blog.models import Post
+from ..factories import PostFactory
+from ..models import Post
 
 
 @pytest.mark.parametrize("published,expected", ((True, 0), (False, 0)))

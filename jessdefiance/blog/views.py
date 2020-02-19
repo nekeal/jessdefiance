@@ -1,10 +1,17 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.filters import SearchFilter
+from rest_framework.permissions import IsAdminUser
 
 from .filters import PostFilterSet, DynamicSearchFilter
-from .models import Post, Tag
-from .serializers import PostSerializer, TagSerializer
+from .models import Post, Tag, PostImage
+from .serializers import PostSerializer, TagSerializer, PostImageSerializer
+
+
+class PostImageViewSet(viewsets.ModelViewSet):
+    serializer_class = PostImageSerializer
+    queryset = PostImage.objects.all()
+    permission_classes = (IsAdminUser,)
 
 
 class TagViewSet(viewsets.ModelViewSet):
