@@ -12,4 +12,4 @@ script: pytest
 env:
   global:
     - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=""
+    - POSTGRES_PASSWORD=
