@@ -8,3 +8,8 @@ install:
   - pip install -r requirements.txt
   - pip install -r requirements-test.txt
 script: pytest
+
+env:
+  global:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=""
