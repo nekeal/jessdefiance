@@ -11,5 +11,4 @@ script: pytest
 
 env:
   global:
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASSWORD=
+    - DATABASE_URL="postgres://postgres@localhost:5432/jessdefiance"
