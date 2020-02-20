@@ -2,11 +2,17 @@ language: python
 python:
   - "3.8"
 
-services:
-  - postgresql
+#services:
+#  - postgresql
+addons:
+  postgresql: "11"
+  apt:
+    packages:
+    - postgresql-11
+    - postgresql-client-11
 
-before_script:
-  - psql -c 'create database travis_test;' -h localhost -U postgres
+#before_script:
+#  - psql -c 'create database travis_test;' -h localhost -U postgres
 
 install:
   - pip install -r requirements.txt
