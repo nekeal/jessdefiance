@@ -5,9 +5,6 @@ python:
 services:
   - postgresql
 
-addons:
-  postgresql: "11"
-
 before_script:
   - lsof -i -P -n | grep 543
   - psql -c 'create database travis_test;' -h localhost -U postgres
