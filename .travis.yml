@@ -13,3 +13,5 @@ script: pytest
 env:
   global:
     - DATABASE_URL="postgres://postgres@localhost:5432/travis_test"
+
+cache: pip
