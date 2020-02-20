@@ -1,9 +1,10 @@
 language: python
 python:
   - "3.8"
+
 services:
   - postgresql
-  -
+
 addons:
   postgresql: "11"
 
