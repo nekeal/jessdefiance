@@ -14,4 +14,4 @@ script: pytest
 
 env:
   global:
-    - DATABASE_URL="postgres://postgres@localhost:5432/jessdefiance"
+    - DATABASE_URL="postgres://postgres@localhost:5432/travisci"
