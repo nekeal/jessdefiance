@@ -7,6 +7,9 @@ services:
 addons:
   postgresql: "11"
 
+before_script:
+  - psql -c 'create database travis_test;' -U postgres
+
 install:
   - pip install -r requirements.txt
   - pip install -r requirements-test.txt
@@ -14,4 +17,4 @@ script: pytest
 
 env:
   global:
-    - DATABASE_URL="postgres://postgres@localhost:5432/travisci"
+    - DATABASE_URL="postgres://postgres@localhost:5432/travis_test"
