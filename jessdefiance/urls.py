@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.routers import DefaultRouter
 
 from .blog.urls import router as blog_router
@@ -29,8 +30,8 @@ schema_view = get_schema_view(openapi.Info(
     description="API for personal blog",
     license=openapi.License(name="GNU General Public License v3.0"),
 ),
+    authentication_classes=(SessionAuthentication, )
 )
-
 router = DefaultRouter()
 router.registry.extend(blog_router.registry)
 
