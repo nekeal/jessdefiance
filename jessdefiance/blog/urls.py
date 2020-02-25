@@ -5,7 +5,7 @@ from rest_framework.routers import DefaultRouter
 from .views import PostViewSet, TagViewSet, PostImageViewSet
 
 router = DefaultRouter()
-router.register('posts', PostViewSet)
+router.register('posts', PostViewSet, basename='post')
 router.register('tags', TagViewSet)
 router.register('images', PostImageViewSet, basename='image')
 
