@@ -14,6 +14,12 @@ def post(db):
 
 
 @pytest.fixture
+def unpublished_post(db):
+    return PostFactory(title='Title2', slug='title2', category=CategoryChoices.XD,
+                       publish_at=timezone.now() + timedelta(days=1))
+
+
+@pytest.fixture
 def post_image(db):
     return PostImageFactory.create(name='name')
 

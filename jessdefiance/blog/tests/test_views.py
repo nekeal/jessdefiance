@@ -1,8 +1,11 @@
+from unittest import mock
+
 import pytest
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import force_authenticate
 
+from ..managers import PostManager
 from ..models import Post
 from ..serializers import PostSerializer
 from ..views import PostViewSet, TagViewSet, PostImageViewSet
@@ -45,6 +48,18 @@ def test_admin_can_see_all_fields(post, api_rf, admin_user, post_list_view):
     assert response.status_code == status.HTTP_200_OK
     assert set(response.data.get('results')[0]) == set(PostSerializer().fields), \
         'have all fields defined in serializer'
+
+
+@mock.patch.object(PostManager, 'published')
+@pytest.mark.parametrize("user,post_count", [(UserFactory.build(is_staff=True), 0),
+                                                  (UserFactory.build(is_staff=False), 1)
+                                                  ])
+def test_get_queryset(m_manager, user, post_count, post, unpublished_post, api_rf, post_list_view):
+    m_manager.all.return_value = m_manager.return_value = Post.objects.none()
+    request = api_rf.get(reverse('api:post-list'))
+    force_authenticate(request, user)
+    post_list_view(request)
+    assert m_manager.call_count == post_count
 
 
 def test_admin_can_create_post_without_tags(api_rf, admin_user, post_list_view, post_without_tags_data):

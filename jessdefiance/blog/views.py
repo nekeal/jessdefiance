@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 from rest_framework.filters import SearchFilter
@@ -23,7 +24,6 @@ class TagViewSet(viewsets.ModelViewSet):
 
 class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
-    queryset = Post.objects.published()
     lookup_field = 'slug'
     filter_backends = (DjangoFilterBackend, DynamicSearchFilter)
     search_fields = ('title',)
@@ -33,3 +33,8 @@ class PostViewSet(viewsets.ModelViewSet):
     def get_serializer(self, *args, **kwargs):
         omit_fields = self.anonymous_user_omit_fields if not self.request.user.is_staff else []
         return super().get_serializer(*args, **kwargs, omit=omit_fields)
+
+    def get_queryset(self) -> 'QuerySet[Post]':
+        if self.request.user.is_staff:
+            return Post.objects.all()
+        return Post.objects.published()
