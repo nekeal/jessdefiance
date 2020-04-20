@@ -27,7 +27,7 @@ class PostSerializer(FlexFieldsModelSerializer):
     class Meta:
         model = Post
         fields = ("title", 'slug', 'category', 'content', 'created_at', 'updated_at', 'publish_at', 'published', 'tags',
-                  'images')
+                  'background_image', 'images')
         expandable_fields = {
             'tags': (TagSerializer, {'many': True}),
             'images': (PostImageSerializer, {'many': True})

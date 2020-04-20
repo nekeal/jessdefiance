@@ -34,6 +34,7 @@ class PostImage(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=200, blank=True)
     slug = models.SlugField(max_length=200, unique=True)
     category = models.CharField(max_length=20, choices=CategoryChoices.choices())
     content = models.TextField()
@@ -44,5 +45,6 @@ class Post(models.Model):
 
     tags = models.ManyToManyField(Tag, blank=True, related_name='posts')
     images = models.ManyToManyField(PostImage, blank=True, related_name='posts')
+    background_image = models.ForeignKey('PostImage', on_delete=models.PROTECT, related_name='posts_with_background')
 
     objects = PostManager()

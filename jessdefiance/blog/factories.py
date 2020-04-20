@@ -28,6 +28,7 @@ class PostFactory(factory.DjangoModelFactory):
     content = 'content'
     publish_at = factory.LazyFunction(lambda: timezone.now() - timedelta(days=1))
     published = True
+    background_image = factory.SubFactory(PostImageFactory)
 
     class Meta:
         model = Post
