@@ -21,22 +21,23 @@ def unpublished_post(db):
 
 @pytest.fixture
 def post_image(db):
-    return PostImageFactory.create(name='name')
+    return PostImageFactory(name='name')
 
 
 @pytest.fixture
-def post_without_tags_data():
+def post_without_tags_data(post_image):
     return {
         'title': 'title',
         'slug': 'title',
         'category': CategoryChoices.XD,
         'content': 'content',
-        'publish_at': timezone.now()
+        'publish_at': timezone.now(),
+        'background_image': post_image.id,
     }
 
 
 @pytest.fixture
-def post_with_tags_data(db):
+def post_with_tags_data(db, post_image):
     tag1, tag2 = TagFactory.create_batch(2)
     return {
         'title': 'title',
@@ -44,7 +45,8 @@ def post_with_tags_data(db):
         'category': CategoryChoices.XD,
         'content': 'content',
         'publish_at': timezone.now(),
-        'tags': [tag1.id, tag2.id]
+        'tags': [tag1.id, tag2.id],
+        'background_image': post_image.id,
     }
 
 
