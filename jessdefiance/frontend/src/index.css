@@ -1,0 +1,23 @@
+@font-face {
+  font-family: LemonMilk;
+  src: url("./fonts/LEMONMILK-Medium.otf");
+}
+
+@font-face {
+  font-family: SegoeUI;
+  src: url("./fonts/Segoe ui semilight.ttf") format('truetype');
+}
+
+body {
+  margin: 0;
+  font-family: SegoeUI, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
