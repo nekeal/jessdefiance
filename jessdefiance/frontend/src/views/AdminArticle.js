@@ -1,14 +1,15 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useReducer } from 'react';
 import { Controller, useForm } from "react-hook-form";
 import Quill from 'quill';
 import styled from "styled-components";
-import { TextField, Select, InputLabel, MenuItem, FormControlLabel, Checkbox, Button, IconButton } from "@material-ui/core";
+import { TextField, Select, InputLabel, MenuItem, FormControlLabel, Checkbox, Button, IconButton, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { getPost, addImage } from "../helpers/postsApi";
+import {getPost, addImage, updatePost, addPost} from "../helpers/postsApi";
 import { useParams } from 'react-router-dom';
 import generateSlug from 'slug';
+import ImageDialog from "../components/ImageDialog";
 
 const Container = styled.main`    
   max-width: 1200px;
@@ -25,11 +26,30 @@ const Container = styled.main`
     margin-right: 2rem;
   }
   
+  .form-submit {
+    margin-left: auto;
+  }
+  
   .post-images {
     margin-top: 2rem;
+    display: flex;
+    align-items: center;
     
     .image {
+      margin-left: 1rem;
+      width: 6rem;
+      height: 6rem;
       
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        cursor: pointer;
+      }
+      
+      .name {
+        
+      }
     }
     
     .add-image {
@@ -97,14 +117,37 @@ const Container = styled.main`
   }
 `;
 
+const initialState = {
+  article: {
+    images: [],
+    tags: []
+  },
+  imageDialogOpen: false,
+};
+
+function reducer(state, action) {
+  const { type, payload } = action;
+  switch (type) {
+    case "SET_ARTICLE":
+      return { ...state, article: payload };
+    case "ADD_IMAGE":
+      const { article } = state;
+      return { ...state, article: { ...article, images: [ ...article.images, payload ] }, imageDialogOpen: false };
+    case "OPEN_IMAGE_DIALOG":
+      return { ...state, imageDialogOpen: true };
+    case "CLOSE_IMAGE_DIALOG":
+      return { ...state, imageDialogOpen: false };
+  }
+}
+
 function AdminArticle() {
   const { register, handleSubmit, errors, setValue, setError, getValues, control } = useForm();
-  const [ article, setArticle ] = useState({});
-  const [ images, setImages ] = useState([]);
-  const [ tags, setTags ] = useState([]);
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   const editor = useRef();
   const { id } = useParams();
 
+  const { article: { images, tags }, imageDialogOpen } = state;
 
   useEffect(() => {
     editor.current = new Quill("#editor", {
@@ -117,37 +160,35 @@ function AdminArticle() {
 
     getPost(id)
       .then(article => {
-        setArticle(article);
-        const { title, category, publishAt, published, content, images, tags } = article;
+        const { title, category, publishAt, published, content } = article;
         setValue("title", title);
         setValue("category", category);
         setValue("publishAt", publishAt);
         setValue("published", published);
         editor.current.clipboard.dangerouslyPasteHTML(0, content);
-        setImages(images);
-        setTags(tags);
+        dispatch({ type: "SET_ARTICLE", payload: article });
       });
-
-    // editor.on('text-change', function(delta, oldDelta, source) {
-    //   console.log(editor.root.innerHTML);
-    // });
   }, []);
 
   const onSubmit = data => {
     const { title, category, publishAt, published } = data;
-    const slug = article.slug || generateSlug(title);
+    const slug = state.article.slug || generateSlug(title);
     const post = {
       title, slug, category, publishAt, published,
       content: editor.current.root.innerHTML,
       images: images.map(image => image.id)
     };
+
+    if(state.article.slug) {
+      updatePost(post);
+    } else {
+      addPost(post);
+    }
   };
 
-  const uploadImage = e => {
-    e.persist();
-
-    addImage(e.target.files[0])
-      .then(image => setImages([...images, image]));
+  const uploadImage = (name, image) => {
+    addImage(name, image)
+      .then(image => dispatch({ type: "ADD_IMAGE", payload: image }));
   };
 
   const insertImage = index => {
@@ -183,39 +224,42 @@ function AdminArticle() {
             } />
           </div>
 
-          <Controller name="publishAt" control={control} as={
-            <DateTimePicker
-              autoOk
-              ampm={false}
-              label="Czas publikacji"
+          <div className="form-field">
+            <Controller name="publishAt" control={control} as={
+              <DateTimePicker
+                autoOk
+                ampm={false}
+                label="Czas publikacji"
+              />
+            }/>
+          </div>
+
+          <div className="form-field">
+            <FormControlLabel
+              control={
+                <Checkbox/>
+              }
+              label="Opublikowany"
             />
-          }/>
+          </div>
 
-          <FormControlLabel
-            control={
-              <Checkbox/>
-            }
-            label="Opublikowany"
-          />
 
-          <Button variant="contained" color="primary" type="submit">
+          <Button className="form-submit" variant="contained" color="primary" type="submit">
             Zapisz zmiany
           </Button>
         </form>
         <div className="post-images">
           Zdjęcia
           {
-            images.map((image, index) => <div className="image">
-              <img src={image.thumbnail} alt="" onClick={insertImage(index)}/>
-            </div>)
+            images.map((image, index) =>
+              <div className="image">
+                <img src={image.thumbnail} alt="" onClick={() => insertImage(index)}/>
+                <div className="name">{image.title}</div>
+              </div>
+            )
           }
-          <IconButton component="label" className="add-image">
+          <IconButton component="label" className="add-image" onClick={() => dispatch({ type: "OPEN_IMAGE_DIALOG" })}>
             <AddIcon/>
-            <input
-              type="file"
-              style={{ display: "none" }}
-              onChange={uploadImage}
-            />
           </IconButton>
         </div>
         <div className="editor-container">
@@ -249,6 +293,7 @@ function AdminArticle() {
           </div>
         </div>
       </Container>
+      <ImageDialog open={imageDialogOpen} onAdd={uploadImage} onClose={() => dispatch({ type: "CLOSE_IMAGE_DIALOG" })}/>
     </MuiPickersUtilsProvider>
   );
 }

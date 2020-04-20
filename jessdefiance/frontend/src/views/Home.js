@@ -140,7 +140,9 @@ function Home() {
 
   useEffect(() => {
     getPosts()
-      .then(articles => setArticles(articles));
+      .then(articles => {
+        setArticles(articles);
+      });
   }, []);
 
   window.onscroll = debounce(() => {

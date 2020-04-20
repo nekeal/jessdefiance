@@ -20,7 +20,7 @@ export function getPosts(offset, category, searchText) {
 
 export function getPost(slug) {
   return axios
-    .get(`/api/posts/${slug}/`)
+    .get(`/api/posts/${slug}/?expand=images,tags`)
     .then(response => {
       const { title, slug, category, content, publish_at, tags, images } = response.data;
       return { title, slug, category, content, publishAt: publish_at, tags, images };
@@ -31,6 +31,8 @@ export function getPost(slug) {
 }
 
 export function addPost(post) {
+  const { title, slug, category, content, publishAt, tags, images } = post;
+  post = { title, slug, category, content, publish_at: publishAt, tags, images };
   return axios
     .post('/api/posts/', post)
     .then(response => {
@@ -41,7 +43,9 @@ export function addPost(post) {
     });
 }
 
-export function updatePost(slug, post) {
+export function updatePost(post) {
+  const { title, slug, category, content, publishAt, tags, images } = post;
+  post = { title, slug, category, content, publish_at: publishAt, tags, images };
   return axios
     .put(`/api/posts/${slug}/`, post)
     .then(response => {
@@ -74,9 +78,11 @@ export function deletePost(slug) {
     });
 }
 
-export function addImage(image) {
+export function addImage(name, image) {
   const formData = new FormData();
+  formData.set("name", name);
   formData.set("image", image);
+
   const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
   return axios
