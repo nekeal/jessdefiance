@@ -4,6 +4,8 @@ import Quill from 'quill';
 import styled from "styled-components";
 import { TextField, Select, InputLabel, MenuItem, FormControlLabel, Checkbox, Button, IconButton, Dialog, DialogContentText, DialogTitle, DialogContent, DialogActions } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
+import StarIcon from "@material-ui/icons/Star";
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import {getPost, addImage, updatePost, addPost} from "../helpers/postsApi";
@@ -37,8 +39,9 @@ const Container = styled.main`
     
     .image {
       margin-left: 1rem;
-      width: 6rem;
-      height: 6rem;
+      width: 10rem;
+      height: 8rem;
+      position: relative;
       
       img {
         width: 100%;
@@ -50,11 +53,28 @@ const Container = styled.main`
       .name {
         
       }
+      
+      .delete-image {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: rgba(255,255,255,0.3);
+        padding: 0.5rem;
+      }
+      
+      .set-background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: rgba(255,255,255,0.3);
+        padding: 0.5rem;
+      }
     }
     
     .add-image {
       margin-left: 1rem;
     }
+    
   }
   
 
@@ -255,10 +275,16 @@ function AdminArticle() {
               <div className="image">
                 <img src={image.thumbnail} alt="" onClick={() => insertImage(index)}/>
                 <div className="name">{image.title}</div>
+                <IconButton className="set-background-image">
+                  <StarIcon/>
+                </IconButton>
+                <IconButton className="delete-image">
+                  <DeleteIcon/>
+                </IconButton>
               </div>
             )
           }
-          <IconButton component="label" className="add-image" onClick={() => dispatch({ type: "OPEN_IMAGE_DIALOG" })}>
+          <IconButton className="add-image" onClick={() => dispatch({ type: "OPEN_IMAGE_DIALOG" })}>
             <AddIcon/>
           </IconButton>
         </div>

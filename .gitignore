@@ -7,7 +7,7 @@ __pycache__/
 .pytest_cache
 db.sqlite3
 media
-public
+/public
 /.env
 .venv
 pg_data/
