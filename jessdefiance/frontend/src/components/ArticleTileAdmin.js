@@ -81,7 +81,7 @@ function ArticleTileAdmin({ article, onDelete, onPublish, onUnpublish }) {
         </div>
         <div>
           <Button size="small" color="secondary" onClick={() => onDelete(slug)}>Usuń</Button>
-          <Button size="small" color="primary" onClick={() => history.push(`/admin/article/${slug}`)}>Edytuj</Button>
+          <Button size="small" color="primary" onClick={() => history.push(`/panel/article/${slug}`)}>Edytuj</Button>
         </div>
       </CardActions>
     </Container>
