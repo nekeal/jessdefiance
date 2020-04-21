@@ -265,8 +265,8 @@ function TopBar({ backgroundImage, title, tags }) {
             <div className="menu">
               <nav>
                 <Link to="/about">O mnie</Link>
-                <Link to="/articles/notes">#notes</Link>
-                <Link to="/articles/looks">#looks</Link>
+                <Link to="/articles/fashion">#fashion</Link>
+                <Link to="/articles/trends">#trends</Link>
                 <Link to="/articles/deeper">#deeper</Link>
                 <Link to="/contact">Kontakt</Link>
               </nav>
