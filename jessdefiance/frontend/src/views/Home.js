@@ -87,6 +87,7 @@ const FetchingError = styled.div`
 `;
 
 const articlesState = {
+  INIT: 'INIT',
   IDLE: 'IDLE',
   LOADING: 'LOADING',
   ERROR: 'ERROR',
@@ -100,7 +101,7 @@ function useQuery() {
 const paginateBy = 9;
 
 function Home() {
-  const [ fetchingState, setFetchingState ] = useState(articlesState.IDLE);
+  const [ fetchingState, setFetchingState ] = useState(articlesState.INIT);
   const [ articles, setArticles ] = useState([]);
   const [ offset, setOffset ] = useState(0);
   const { category } = useParams();
@@ -109,6 +110,7 @@ function Home() {
   const renderFetchingState = () => {
     switch (fetchingState) {
       case articlesState.LOADING:
+      case articlesState.INIT:
         return <PhantomArticles>
           <PhantomArticleTile/>
           <PhantomArticleTile/>
@@ -123,13 +125,16 @@ function Home() {
     }
   };
 
+
   useEffect(() => {
     getPosts(paginateBy, 0, category && category.toUpperCase(), search)
       .then(articles => {
         setOffset(paginateBy);
-        setArticles(articles || []);
-        if(!articles || articles.length === 0) {
+        if(!articles) {
           setFetchingState(articlesState.ALL_LOADED);
+        } else {
+          setArticles(articles);
+          setFetchingState(articlesState.IDLE);
         }
       });
   }, [ category, search ]);
@@ -157,13 +162,15 @@ function Home() {
     <>
       <TopBar/>
       { articles[0] && <FeaturedArticle article={articles[0]}/> }
-
-      <ArticleTileWrapper>
-        <div className="about">
-          <AboutTile/>
-        </div>
-        { articles && articles.map(article => <ArticleTile key={article.slug} article={article}/>) }
-      </ArticleTileWrapper>
+      {
+        fetchingState !== articlesState.INIT &&
+        <ArticleTileWrapper>
+          <div className="about">
+            <AboutTile/>
+          </div>
+          { articles && articles.map(article => <ArticleTile key={article.slug} article={article}/>) }
+        </ArticleTileWrapper>
+      }
       {renderFetchingState()}
     </>
   );

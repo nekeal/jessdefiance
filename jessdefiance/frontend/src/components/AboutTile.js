@@ -24,6 +24,10 @@ const AboutWrapper = styled.main`
     }
   }
   
+  a {
+    color: darkblue;
+  }
+  
   .content {
     margin: 0 1rem;
   }
