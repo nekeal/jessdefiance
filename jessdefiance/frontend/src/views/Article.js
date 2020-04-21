@@ -52,6 +52,7 @@ function Article() {
   const { id } = useParams();
   const [ galleryState, setGalleryState ] = useState({ photoIndex: 0, isOpen: false });
   const [ article, setArticle ] = useState(undefined);
+  const [ disqus, setDisqus ] = useState(undefined);
 
   const { photoIndex, isOpen } = galleryState;
 
@@ -68,18 +69,18 @@ function Article() {
           }
         });
 
+        setDisqus({
+          shortname: "jess-defiance",
+          config: {
+            url: "https://jessdefiance.art/article" + id,
+            identifier: id,
+            title: article.title
+          }
+        });
+
         setArticle({ ...article, content: parsedContent });
       });
   }, []);
-
-
-  const disqusShortname = 'jessdefiancetest';
-  const disqusConfig = {
-    url: 'http://jessdefiance.com/article/' + id,
-    identifier: id,
-    title: id,
-  };
-
 
 
   const renderArticle = () => {
@@ -94,7 +95,9 @@ function Article() {
             <div className="category">{category}</div>
           </div>
           <div className="content">{content}</div>
-          <Disqus.DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
+          {
+            disqus && <Disqus.DiscussionEmbed shortname={disqus.shortname} config={disqus.config} />
+          }
         </ArticleContent>
         {isOpen && (
           <Lightbox
