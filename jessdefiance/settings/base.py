@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django_filters',
     'easy_thumbnails',
+    'webpack_loader',
     'jessdefiance.blog',
 ]
 
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'jessdefiance.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'jessdefiance/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,6 +124,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'jessdefiance/frontend/build/static'),
+
 ]
 
 STATIC_URL = '/static/'
@@ -137,6 +140,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['jessdefiance.blog.permissions.IsAdminOrReadOnly'],
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
 }
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'jessdefiance/frontend/build/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'jessdefiance/frontend/config/webpack-stats.json'),
+    }
+}
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
