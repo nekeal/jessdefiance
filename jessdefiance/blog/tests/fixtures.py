@@ -9,13 +9,13 @@ from ..models import CategoryChoices
 
 @pytest.fixture
 def post(db):
-    return PostFactory(title='Title', slug='title', category=CategoryChoices.XD,
+    return PostFactory(title='Title', slug='title', category=CategoryChoices.TRENDS,
                        publish_at=timezone.now() - timedelta(days=1))
 
 
 @pytest.fixture
 def unpublished_post(db):
-    return PostFactory(title='Title2', slug='title2', category=CategoryChoices.XD,
+    return PostFactory(title='Title2', slug='title2', category=CategoryChoices.TRENDS,
                        publish_at=timezone.now() + timedelta(days=1))
 
 
@@ -29,7 +29,7 @@ def post_without_tags_data(post_image):
     return {
         'title': 'title',
         'slug': 'title',
-        'category': CategoryChoices.XD,
+        'category': CategoryChoices.TRENDS,
         'content': 'content',
         'publish_at': timezone.now(),
         'background_image': post_image.id,
@@ -42,7 +42,7 @@ def post_with_tags_data(db, post_image):
     return {
         'title': 'title',
         'slug': 'title',
-        'category': CategoryChoices.XD,
+        'category': CategoryChoices.TRENDS,
         'content': 'content',
         'publish_at': timezone.now(),
         'tags': [tag1.id, tag2.id],
