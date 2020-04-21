@@ -21,3 +21,18 @@ a {
   text-decoration: none;
 }
 
+:root {
+  font-size: 16px;
+}
+
+@media(max-width: 900px) {
+  :root {
+    font-size: 14px;
+  }
+}
+
+@media(max-width: 500px) {
+  :root {
+    font-size: 12px;
+  }
+}
