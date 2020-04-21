@@ -7,8 +7,8 @@ import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import { getPost } from "../helpers/postsApi";
 import ReactHtmlParser from 'react-html-parser';
-
-// const article = { id: 1, title: 'Jaki jest Twój typ sylwetki?', subtitle: 'Lorem ipsum dolor sit amet', publicationDate: '01 12 19', category: '#fashion', backgroundImage: 'https://picsum.photos/800/600'};
+import { articleDate } from "../helpers/dateUtil";
+import {mixins} from "../helpers/styles";
 
 const ArticleContent = styled.main`
   width: 80%;
@@ -22,47 +22,25 @@ const ArticleContent = styled.main`
     justify-content: space-between;
   }
   
+  .tag {
+    font-family: LemonMilk;
+    font-size: 1rem;
+    border-radius: 1rem;
+    margin-right: 0.6rem;
+    margin-bottom: 0.6rem;
+    padding: 0.2rem 0.6rem;
+    color: #F3DFD9;      
+    background-color: #3C3C3C;
+  }
+  
   .content {
     margin-top: 1rem;
+    margin-bottom: 4rem;
     
-    h2 {
-      font-family: LemonMilk;
-      font-weight: normal;
-    }
-    
-    h3 {
-      font-family: LemonMilk;
-      font-weight: normal;
-    }
-    
-    ol {
-      list-style: none;
-      counter-reset: counter;
-    }
-    
-    ol li {
-      counter-increment: counter;
-    }
-    
-    ol li::before {
-      display: inline-block;
-      content: "#" counter(counter);
-      font-family: LemonMilk;
-      width: 2rem;
-    }
-    
-    blockquote {
-      font-style: italic;
-    }
+    ${mixins.articleContent};
     
     img {
-      width: 80%;
-      border-radius: 1rem;
-      box-shadow: 7px 15px 3px 0px #CBB7B0; 
-      margin: 2rem auto;
-      display: block;
       cursor: pointer;
-      
       @media(max-width: 768px) {
         width: 100%;
       }
@@ -90,7 +68,7 @@ function Article() {
           }
         });
 
-        setArticle({ ...article, content: parsedContent, images: article.images.map(image => image.image) });
+        setArticle({ ...article, content: parsedContent });
       });
   }, []);
 
@@ -102,26 +80,27 @@ function Article() {
     title: id,
   };
 
+
+
   const renderArticle = () => {
-    const { title, slug, category, content, publishedAt, tags, images } = article;
+    const { title, subtitle, slug, category, content, publishAt, tags, images, backgroundImage } = article;
+    console.log(article);
     return (
       <>
-        <TopBar title={title} backgroundImage='https://picsum.photos/800/600'/>
-          <ArticleContent>
+        <TopBar title={title} tags={tags} backgroundImage={images.find(image => image.id === backgroundImage).image}/>
+        <ArticleContent>
           <div className="info">
-          <div className="publication-date">{publishedAt}</div>
-          <div className="category">{category}</div>
+            <div className="publication-date">{articleDate(publishAt)}</div>
+            <div className="category">{category}</div>
           </div>
-          <div className="content">
-            {content}
-          </div>
+          <div className="content">{content}</div>
           <Disqus.DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
         </ArticleContent>
         {isOpen && (
           <Lightbox
-            mainSrc={images[photoIndex]}
-            nextSrc={images[(photoIndex + 1) % images.length]}
-            prevSrc={images[(photoIndex + images.length - 1) % images.length]}
+            mainSrc={images[photoIndex].image}
+            nextSrc={images[(photoIndex + 1) % images.length].image}
+            prevSrc={images[(photoIndex + images.length - 1) % images.length].image}
             onCloseRequest={() => setGalleryState({ isOpen: false })}
             onMovePrevRequest={() =>
               setGalleryState({

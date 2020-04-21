@@ -22,12 +22,34 @@ const Wrapper = styled.header`
     width: 75%;
     text-align: center;
     margin: 0 auto;
-    padding-bottom: 10rem;
+    padding-bottom: 3rem;
     
     @media(max-width: 768px) {
-      padding-bottom: 5rem;
+      padding-bottom: 1rem;
     }
   }
+  
+  .tags { 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 90%;
+    margin: 0 auto;
+    padding-bottom: 5rem;
+
+    .tag {
+      display: flex;
+      font-family: LemonMilk;
+      font-size: 1rem;
+      border-radius: 1rem;
+      margin-right: 0.6rem;
+      margin-bottom: 0.6rem;
+      padding: 0.2rem 0.6rem;
+      color: #3C3C3C;      
+      background-color: #F3DFD9;
+    }  
+  }
+  
 `;
 
 const NavBar = styled.div`
@@ -195,7 +217,7 @@ const SearchWrapper = styled.div`
   }
 `;
 
-function TopBar({ backgroundImage, title }) {
+function TopBar({ backgroundImage, title, tags }) {
   const [menuExpanded, setMenuExpanded] = useState(false);
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -245,7 +267,7 @@ function TopBar({ backgroundImage, title }) {
                 <Link to="/about">O mnie</Link>
                 <Link to="/articles/notes">#notes</Link>
                 <Link to="/articles/looks">#looks</Link>
-                <Link to="/articles/xdxd">#xD<sup>xD</sup></Link>
+                <Link to="/articles/deeper">#deeper</Link>
                 <Link to="/contact">Kontakt</Link>
               </nav>
             </div>
@@ -253,6 +275,7 @@ function TopBar({ backgroundImage, title }) {
         </div>
       </NavBar>
       { title && <div className="title">{title}</div> }
+      { tags && <div className="tags">{tags.map(tag => <div className="tag" key={tag.id}>{tag.name}</div>)}</div>}
     </Wrapper>
   );
 }

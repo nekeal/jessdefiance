@@ -16,14 +16,22 @@ const ContactWrapper = styled.main`
   }
   
   .content {
-    margin: 0 1rem;
+    margin: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   
   .contact-item {
     display: flex;
     align-items: center;
     font-size: 1.3rem;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.8rem;
+    
+    //@media(min-width: 800px) {
+    //  justify-content: center;
+    //}
   }
   
   .item-description {

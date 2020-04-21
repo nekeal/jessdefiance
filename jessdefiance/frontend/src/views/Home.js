@@ -3,8 +3,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { FeaturedArticle, ArticleTile, PhantomArticleTile, AboutTile, TopBar } from "../components";
 import styled from 'styled-components';
 import debounce from "lodash.debounce";
-import {addPost, getPosts} from '../helpers/postsApi';
-import {login} from "../helpers/authApi";
+import { getPosts } from '../helpers/postsApi';
 
 // const articlesMocks = [
 //   { id: 1, title: 'Jaki jest Twój typ sylwetki?', subtitle: 'Lorem ipsum dolor sit amet', publicationDate: '01 12 19', category: '#fashion', backgroundImage: 'https://picsum.photos/1600/1200'},
@@ -94,32 +93,18 @@ const articlesState = {
   ALL_LOADED: 'ALL_LOADED'
 };
 
-
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
+const paginateBy = 9;
+
 function Home() {
-  const [fetchingState, setFetchingState] = useState(articlesState.IDLE);
-  const [articles, setArticles] = useState([]);
+  const [ fetchingState, setFetchingState ] = useState(articlesState.IDLE);
+  const [ articles, setArticles ] = useState([]);
+  const [ offset, setOffset ] = useState(0);
   const { category } = useParams();
-  const query = useQuery();
-
-  // console.log(category);
-  // console.log(query.get("search"));
-
-  // login('admin', 'admin').then(() => {
-  //   addPost({
-  //     title: 'Jaki jest Twój typ sylwetki?',
-  //     slug: 'some-slug-7',
-  //     subtitle: 'Lorem ipsum dolor sit amet',
-  //     publish_at: '2018-02-18T17:05:57Z',
-  //     category: 'NOTES',
-  //     backgroundImage: 'https://picsum.photos/1600/1200',
-  //     content: '<p>no content at all</p>',
-  //     published: true,
-  //   });
-  // });
+  const { search } = useQuery();
 
   const renderFetchingState = () => {
     switch (fetchingState) {
@@ -139,42 +124,45 @@ function Home() {
   };
 
   useEffect(() => {
-    getPosts()
+    getPosts(paginateBy, 0, category && category.toUpperCase(), search)
       .then(articles => {
-        setArticles(articles);
+        setOffset(paginateBy);
+        setArticles(articles || []);
+        if(!articles || articles.length === 0) {
+          setFetchingState(articlesState.ALL_LOADED);
+        }
       });
-  }, []);
+  }, [ category, search ]);
 
   window.onscroll = debounce(() => {
     if (window.innerHeight + document.documentElement.scrollTop >= 0.7 * document.documentElement.offsetHeight && fetchingState === articlesState.IDLE) {
       setFetchingState(articlesState.LOADING);
-      // fetchArticles()
-      //   .then(newArticles => {
-      //     setArticles(articles.concat(newArticles));
-      //     setFetchingState(articlesState.IDLE);
-      //   })
-      //   .catch(error => {
-      //     setFetchingState(articlesState.ERROR);
-      //   })
+      getPosts(9, offset, category && category.toUpperCase(), search)
+        .then(newArticles => {
+          setOffset(offset + paginateBy);
+          if(newArticles.length === 0) {
+            setFetchingState(articlesState.ALL_LOADED);
+          } else {
+            setArticles(articles.concat(newArticles));
+            setFetchingState(articlesState.IDLE);
+          }
+        })
+        .catch(error => {
+          setFetchingState(articlesState.ERROR);
+        })
     }
   }, 100);
 
   return (
     <>
       <TopBar/>
-      {/*<FeaturedArticle article={articles[0]}/>*/}
-      {/*<div*/}
-      {/*  className="canva-embed"*/}
-      {/*  data-design-id="DAD327Jy9SI"*/}
-      {/*  data-height-ratio="1.7778"*/}
-      {/*  style={{padding:"177.7778% 5px 5px 5px", background: "rgba(0,0,0,0.03)", borderRadius: "8px"}}*/}
-      {/*/>*/}
+      { articles[0] && <FeaturedArticle article={articles[0]}/> }
 
       <ArticleTileWrapper>
-        { !category && <div className="about">
+        <div className="about">
           <AboutTile/>
-        </div> }
-        { articles.map(article => <ArticleTile key={article.id} article={article}/>) }
+        </div>
+        { articles && articles.map(article => <ArticleTile key={article.slug} article={article}/>) }
       </ArticleTileWrapper>
       {renderFetchingState()}
     </>

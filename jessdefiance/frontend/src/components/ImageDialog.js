@@ -1,6 +1,7 @@
 import React, {useState} from "react";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 function ImageDialog({ open, onAdd, onClose }) {
   const [ name, setName ] = useState("");
@@ -10,8 +11,14 @@ function ImageDialog({ open, onAdd, onClose }) {
     onAdd(name, image);
   };
 
+  const close = () => {
+    setName("");
+    setImage({});
+    onClose();
+  };
+
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={close}>
       <DialogTitle>Dodaj zdjęcie</DialogTitle>
       <DialogContent>
         <TextField
@@ -24,15 +31,21 @@ function ImageDialog({ open, onAdd, onClose }) {
           onChange={e => setName(e.target.value)}
           fullWidth
         />
-        <Button component="label" startIcon={<AddIcon/>}>
-          Dodaj zdjęcie
-          <input
-            type="file"
-            style={{ display: "none" }}
-            onChange={e => setImage(e.target.files[0])}
-          />
-        </Button>
-
+        {
+          image.name ?
+            <div style={{marginTop: "1rem"}}>
+              { image.name }
+              <IconButton onClick={() => setImage({})}><DeleteIcon/></IconButton>
+            </div> :
+            <Button component="label" startIcon={<AddIcon/>} style={{marginTop: "1rem"}}>
+              Wybierz zdjęcie
+              <input
+                type="file"
+                style={{ display: "none" }}
+                onChange={e => setImage(e.target.files[0])}
+              />
+            </Button>
+        }
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="secondary">

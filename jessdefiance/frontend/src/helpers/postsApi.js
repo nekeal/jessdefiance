@@ -1,17 +1,23 @@
 import axios from "axios";
+import queryString from "query-string";
 
-const authHeader = () => ({
-  'Authorization': 'Bearer ' + localStorage.getItem('access-token')
-});
+function toRequest(post) {
+  const { title, subtitle, slug, category, content, publishAt, backgroundImage, tags, images, published } = post;
+  return { title, subtitle, slug, category, content, publish_at: publishAt, background_image: backgroundImage, tags, images, published };
+}
 
-export function getPosts(offset, category, searchText) {
+function fromResponse(post) {
+  const { title, subtitle, slug, category, content, publish_at, background_image, tags, images, published } = post;
+  return { title, subtitle, slug, category, content, publishAt: publish_at, backgroundImage: background_image, tags, images, published };
+}
+
+export function getPosts(limit, offset, category, search) {
+  const query = queryString.stringify({ limit, offset, category, search });
+
   return axios
-    .get('/api/posts/')
+    .get(`/api/posts/?expand=images,tags&${query}`)
     .then(response => {
-      return response.data.results.map(post => {
-        const { title, slug, category, content, publish_at, tags, images } = post;
-        return { title, slug, category, content, publishAt: publish_at, tags, images };
-      });
+      return response.data.results.map(fromResponse);
     })
     .catch(error => {
       console.log(error);
@@ -21,58 +27,36 @@ export function getPosts(offset, category, searchText) {
 export function getPost(slug) {
   return axios
     .get(`/api/posts/${slug}/?expand=images,tags`)
-    .then(response => {
-      const { title, slug, category, content, publish_at, tags, images } = response.data;
-      return { title, slug, category, content, publishAt: publish_at, tags, images };
-    })
+    .then(response => fromResponse(response.data))
     .catch(error => {
       console.log(error);
     });
 }
 
 export function addPost(post) {
-  const { title, slug, category, content, publishAt, tags, images } = post;
-  post = { title, slug, category, content, publish_at: publishAt, tags, images };
   return axios
-    .post('/api/posts/', post)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.log(error);
-    });
+    .post('/api/posts/', toRequest(post))
+    .then(response => fromResponse(response.data));
 }
 
 export function updatePost(post) {
-  const { title, slug, category, content, publishAt, tags, images } = post;
-  post = { title, slug, category, content, publish_at: publishAt, tags, images };
+  const { slug } = post;
+
   return axios
-    .put(`/api/posts/${slug}/`, post)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.log(error);
-    });
+    .put(`/api/posts/${slug}/`, toRequest(post))
+    .then(response => fromResponse(response.data));
 }
 
 export function partialUpdatePost(slug, postDelta) {
   return axios
     .patch(`/api/posts/${slug}/`, postDelta)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.log(error);
-    });
+    .then(response => fromResponse(response.data))
 }
 
 export function deletePost(slug) {
   return axios
     .delete(`/api/posts/${slug}/`)
-    .then(response => {
-      console.log(response);
-    })
+    .then(response => response.data)
     .catch(error => {
       console.log(error);
     });
@@ -87,6 +71,34 @@ export function addImage(name, image) {
 
   return axios
     .post(`/api/images/`, formData, config)
+    .then(response => response.data)
+    .catch(error => console.log(error));
+}
+
+export function deleteImage(id) {
+  return axios
+    .delete(`/api/images/${id}/`)
+    .then(response => response.data)
+    .catch(error => console.log(error));
+}
+
+export function getTags() {
+  return axios
+    .get(`/api/tags/`)
+    .then(response => response.data.results)
+    .catch(error => console.log(error));
+}
+
+export function addTag(name) {
+  return axios
+    .post(`/api/tags/`, { name })
+    .then(response => response.data)
+    .catch(error => console.log(error));
+}
+
+export function deleteTag(id) {
+  return axios
+    .delete(`/api/tags/${id}`)
     .then(response => response.data)
     .catch(error => console.log(error));
 }

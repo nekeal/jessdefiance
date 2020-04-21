@@ -1,6 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import { login } from '../helpers/authApi';
+import { TextField, Button } from "@material-ui/core";
+import styled from "styled-components";
+
+const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .form {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .form-field {
+    margin-left: 1rem;
+  }
+  
+  .form-submit {
+    margin-left: 1.5rem;
+  }
+`;
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -22,15 +43,18 @@ function Login() {
   };
 
   return (
-    <>
-      Login
-      <form onSubmit={authorize}>
-        <input type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Nazwa użytkownika"/>
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Hasło"/>
+    <Container>
+      <form className="form" onSubmit={authorize}>
+        <div className="form-field">
+          <TextField type="text" value={username} onChange={e => setUsername(e.target.value)} label="Nazwa użytkownika"/>
+        </div>
+        <div className="form-field">
+          <TextField type="password" value={password} onChange={e => setPassword(e.target.value)} label="Hasło"/>
+        </div>
         { validationError }
-        <input type="submit" value="Zaloguj"/>
+        <Button className="form-submit" type="submit" variant="contained" color="primary">Zaloguj</Button>
       </form>
-    </>
+    </Container>
   );
 }
 

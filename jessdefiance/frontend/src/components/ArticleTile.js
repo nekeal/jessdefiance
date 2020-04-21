@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import {articleDate} from "../helpers/dateUtil";
 
 const Article = styled.div`
   margin: 1rem;
@@ -52,24 +53,22 @@ const Article = styled.div`
 `;
 
 function ArticleTile({ article }) {
+  const { title, subtitle, category, images, backgroundImage, tags, publishAt, slug } = article;
   return (
-    <Article image={article.backgroundImage}>
+    <Article image={images.find(image => image.id === backgroundImage).image}>
       <div className="publication-date">
-        {article.publishedAt}
+        {articleDate(publishAt)}
       </div>
       <div className="heading">
-        <Link to={'/article/' + article.slug}>
-          <div className="title">
-              {article.title}
-          </div>
-          {/*<div className="subtitle">*/}
-          {/*  {article.subtitle}*/}
-          {/*</div>*/}
+        <Link to={'/article/' + slug}>
+          <div className="title">{title}</div>
+          {
+            article.subtitle &&
+            <div className="subtitle">{article.subtitle}</div>
+          }
         </Link>
       </div>
-      <div className="category">
-        {article.category}
-      </div>
+      <div className="category">#{category}</div>
     </Article>
   );
 }

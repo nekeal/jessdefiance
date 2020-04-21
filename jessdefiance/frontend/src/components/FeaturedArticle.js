@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import {articleDate} from "../helpers/dateUtil";
 
 const Article = styled.div`
   color: white;
@@ -52,23 +53,16 @@ const Article = styled.div`
 `;
 
 function FeaturedArticle({ article }) {
+  const { title, subtitle, category, images, backgroundImage, tags, publishAt, slug } = article;
   return (
-    <Article image={article.backgroundImage}>
+    <Article image={images.find(image => image.id === backgroundImage).image}>
       <div className="article-data">
-        <div className="publication-date">
-          {article.publicationDate}
-        </div>
+        <div className="publication-date">{articleDate(publishAt)}</div>
         <div className="title">
-          <Link to={'/article/' + article.id}>
-            {article.title}
-          </Link>
+          <Link to={'/article/' + slug}>{title}</Link>
         </div>
-        <div className="subtitle">
-          {article.subtitle}
-        </div>
-        <div className="category">
-          {article.category}
-        </div>
+        <div className="subtitle">Najnowszy artykuł</div>
+        <div className="category">#{category}</div>
       </div>
     </Article>
   );

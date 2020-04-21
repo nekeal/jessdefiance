@@ -86,7 +86,10 @@
     "webpack-bundle-tracker": "^0.4.3",
     "webpack-dev-server": "3.10.1",
     "webpack-manifest-plugin": "2.2.0",
-    "workbox-webpack-plugin": "4.3.1"
+    "workbox-webpack-plugin": "4.3.1",
+    "classnames": "latest",
+    "@material-ui/lab": "latest",
+    "query-string": "latest"
   },
   "scripts": {
     "start": "node scripts/start.js",
