@@ -8,9 +8,9 @@ from jessdefiance.blog.managers import PostManager
 
 
 class CategoryChoices(Enum):
-    NOTES = 'Notes'
-    LOOKS = 'Looks'
-    XD = 'xDˣᴰ'
+    FASHION = 'Fashion'
+    TRENDS = 'Trends'
+    DEEPER = 'Deeper'
 
     def __str__(self) -> str:
         return self.name
