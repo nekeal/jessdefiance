@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  web:
+    restart: always
+    build: .
+    volumes:
+      - web-static:/app/public
+      - web-media:/app/media
+    links:
+      - postgres:postgres
+    environment:
+      - POSTGRES_HOST=postgres
+    env_file:
+      - .env
+    command: bash -c "python manage.py migrate
+             && python manage.py collectstatic --noinput
+             && gunicorn -b 0:8000 jessdefiance.wsgi"
+
+  postgres:
+    restart: always
+    image: postgres:11-alpine
+    env_file:
+      - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+
+  nginx:
+    image: nginx:1.17.3
+    restart: unless-stopped
+    volumes:
+      - web-static:/www/static
+      - web-media:/www/media
+      - ./deployment/configs/ssl:/etc/ssl
+      - ./deployment/configs/nginx:/etc/nginx/conf.d
+    links:
+      - web:web
+    ports:
+      - "80:80"
+      - "443:443"
+
+volumes:
+  web-static:
+  web-media:
+  pgdata:
