@@ -24,7 +24,7 @@ class TagFactory(factory.DjangoModelFactory):
 class PostFactory(factory.DjangoModelFactory):
     title = factory.Sequence(lambda n: f'Title {n}')
     slug = factory.LazyAttribute(lambda o: slugify(o.title))
-    category = CategoryChoices.XD
+    category = CategoryChoices.TRENDS
     content = 'content'
     publish_at = factory.LazyFunction(lambda: timezone.now() - timedelta(days=1))
     published = True
