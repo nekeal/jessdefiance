@@ -40,8 +40,9 @@ function ArticleTile() {
       <div className="title">O mnie</div>
       <div className="image"><img src={jess} alt=""/></div>
       <div className="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, ea est et fugiat illum iusto laborum molestiae mollitia nemo obcaecati pariatur perspiciatis, qui quia quibusdam quod tempore vel. Doloribus, fugiat.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At, autem beatae blanditiis consequuntur, corporis ea eligendi, illum ipsa ipsum molestias mollitia natus nemo non reprehenderit repudiandae vero voluptatem. Distinctio, earum.</p>
+        <p>Z tej strony Jess, stylista mody i pasjonatka sztuki. W zasadzie pasjonatka w wielu dziedzinach.</p>
+        <p>Będziemy tutaj bawić się modą, poznawać i starać się ją zrozumieć. Niezależnie od tego co już wiesz i jak bardzo liczy się dla Ciebie to, z czym się ona wiąże, powinno się znaleźć tutaj coś dla Ciebie. Zaczniemy od podstaw, ale regularnie będziemy zaglądać też do świata high fashion.</p>
+        <p>A ponieważ blog ten jest miejscem dla nas wszystkich, to zachęcam Cię do tego, byś aktywnie uczestniczył(a) w tym co się tutaj dzieje, bo to będzie dla mnie największa nagroda!</p>
         <Link to="/about">Czytaj więcej</Link>
       </div>
     </AboutWrapper>

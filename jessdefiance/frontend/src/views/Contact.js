@@ -1,7 +1,8 @@
 import React from 'react';
 import { TopBar } from "../components";
 import styled from 'styled-components';
-import { faFacebookSquare, faTwitterSquare, faInstagramSquare } from '@fortawesome/free-brands-svg-icons';
+import { faInstagramSquare } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope } from '@fortawesome/fontawesome-free-solid';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from 'react-router-dom';
 
@@ -46,19 +47,13 @@ function Contact() {
       <ContactWrapper>
         <div className="title">Kontakt</div>
         <div className="content">
-          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+          <a href="mailto:jessdefiance@gmail.com" target="_blank" rel="noopener noreferrer">
             <div className="contact-item">
-              <FontAwesomeIcon icon={faFacebookSquare} color='rgb(62, 62, 62)' size="2x"/>
-              <div className="item-description">jessdefiance</div>
+              <FontAwesomeIcon icon={faEnvelope} color='rgb(62, 62, 62)' size="2x"/>
+              <div className="item-description">jessdefiance@gmail.com</div>
             </div>
           </a>
-          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-            <div className="contact-item">
-              <FontAwesomeIcon icon={faTwitterSquare} color='rgb(62, 62, 62)' size="2x"/>
-              <div className="item-description">jessdefiance</div>
-            </div>
-          </a>
-          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.instagram.com/jessdefiance/" target="_blank" rel="noopener noreferrer">
             <div className="contact-item">
               <FontAwesomeIcon icon={faInstagramSquare} color='rgb(62, 62, 62)' size="2x"/>
               <div className="item-description">jessdefiance</div>

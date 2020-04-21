@@ -33,7 +33,7 @@ function Login() {
     event.preventDefault();
     login(username, password)
       .then(response => {
-        history.push('/admin');
+        history.push('/panel');
       })
       .catch(error => {
         setUsername('');

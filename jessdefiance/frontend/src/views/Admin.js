@@ -88,7 +88,7 @@ function Admin() {
 
   return (
     <Container>
-      <Button variant="contained" color="primary" className="article-add" onClick={() => history.push("/admin/article/add")}>Dodaj artykuł</Button>
+      <Button variant="contained" color="primary" className="article-add" onClick={() => history.push("/panel/article/add")}>Dodaj artykuł</Button>
       <div className="articles">
         {
           articles.map(article => <ArticleTileAdmin article={article} onDelete={removePost} onPublish={publishNow} onUnpublish={unpublish} key={article.slug}/> )

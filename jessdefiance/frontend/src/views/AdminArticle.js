@@ -330,8 +330,8 @@ function AdminArticle() {
               <InputLabel id="category-label" className="MuiInputLabel-shrink">Kategoria</InputLabel>
               <Controller name="category" defaultValue="NOTES" control={control} rules={{ required: "Pole jest wymagane"}} as={
                 <Select labelId="category-label">
-                  <MenuItem value="NOTES">Notes</MenuItem>
-                  <MenuItem value="LOOKS">Looks</MenuItem>
+                  <MenuItem value="FASHION">Fashion</MenuItem>
+                  <MenuItem value="TRENDS">Trends</MenuItem>
                   <MenuItem value="DEEPER">Deeper</MenuItem>
                 </Select>
               } />

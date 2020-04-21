@@ -26,13 +26,13 @@ function Root() {
         <Route exact path='/article/:id'>
           <Article/>
         </Route>
-        <Route exact path='/admin'>
+        <Route exact path='/panel'>
           <Admin/>
         </Route>
-        <Route exact path='/admin/article/add'>
+        <Route exact path='/panel/article/add'>
           <AdminArticle/>
         </Route>
-        <Route exact path='/admin/article/:id'>
+        <Route exact path='/panel/article/:id'>
           <AdminArticle/>
         </Route>
         <Route exact path='/login'>
