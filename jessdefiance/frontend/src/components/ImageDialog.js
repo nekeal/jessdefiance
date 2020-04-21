@@ -7,15 +7,14 @@ function ImageDialog({ open, onAdd, onClose }) {
   const [ name, setName ] = useState("");
   const [ image, setImage ] = useState({});
 
-  const addImage = () => {
-    onAdd(name, image);
-  };
-
-  const close = () => {
+  const clear = () => {
     setName("");
     setImage({});
-    onClose();
   };
+
+  const addImage = () => { clear(); onAdd(name, image); };
+
+  const close = () => { clear(); onClose(); };
 
   return (
     <Dialog open={open} onClose={close}>

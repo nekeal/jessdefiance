@@ -4,7 +4,7 @@ import { TopBar } from "../components";
 import styled from 'styled-components';
 import Disqus from 'disqus-react';
 import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
+import './lightbox.css';
 import { getPost } from "../helpers/postsApi";
 import ReactHtmlParser from 'react-html-parser';
 import { articleDate } from "../helpers/dateUtil";
@@ -56,6 +56,8 @@ function Article() {
 
   const { photoIndex, isOpen } = galleryState;
 
+  console.log(article && article.images);
+
   useEffect(() => {
     getPost(id)
       .then(article => {
@@ -64,7 +66,9 @@ function Article() {
           transform: (node, index) => {
             if(node.name === "img") {
               imgIndex++;
-              return <img src={node.attribs.src} alt="" onClick={() => setGalleryState({ photoIndex: imgIndex, isOpen: true })}/>
+              return <img src={node.attribs.src} alt="" onClick={() => setGalleryState(
+                { photoIndex: article.images.findIndex(image => image.image === node.attribs.src), isOpen: true })}
+              />
             }
           }
         });
@@ -85,7 +89,6 @@ function Article() {
 
   const renderArticle = () => {
     const { title, subtitle, slug, category, content, publishAt, tags, images, backgroundImage } = article;
-    console.log(article);
     return (
       <>
         <TopBar title={title} tags={tags} backgroundImage={images.find(image => image.id === backgroundImage).image}/>

@@ -175,6 +175,9 @@ function reducer(state, action) {
     case "ADD_IMAGE_END":
       newImages = article.images.map(image => image.name === payload.name ? payload : image);
       return { ...state, article: { ...article, images: newImages } };
+    case "ADD_IMAGE_ERROR":
+      newImages = article.images.filter(image => image.name !== payload);
+      return { ...state, article: { ...article, images: newImages } };
     case "REMOVE_IMAGE":
       newImages = article.images.filter(image => image.id !== payload);
       return { ...state, article: { ...article, images: newImages } };
@@ -278,13 +281,18 @@ function AdminArticle() {
   const uploadImage = (name, image) => {
     dispatch({ type: "ADD_IMAGE_START", payload: name });
     addImage(name, image)
-      .then(imageObj => dispatch({ type: "ADD_IMAGE_END", payload: imageObj }));
+      .then(imageObj => dispatch({ type: "ADD_IMAGE_END", payload: imageObj }))
+      .catch(() => {
+        dispatch({ type: "ADD_IMAGE_ERROR", payload: name });
+        dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Wystąpił błąd przy dodawaniu zdjęcia" } });
+      });
   };
 
   const removeImage = id => {
     // prevent from deleting image which is in article
     deleteImage(id)
-      .then(response => dispatch({ type: "REMOVE_IMAGE", payload: id }));
+      .then(response => dispatch({ type: "REMOVE_IMAGE", payload: id }))
+      .catch(() => dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Wystąpił błąd przy usuwaniu zdjęcia" } }));
   };
 
   const setBackgroundImage = id => {
