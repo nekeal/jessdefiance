@@ -37,4 +37,4 @@ class PostViewSet(viewsets.ModelViewSet):
     def get_queryset(self) -> 'QuerySet[Post]':
         if self.request.user.is_staff:
             return Post.objects.all()
-        return Post.objects.published()
+        return Post.objects.published().order_by('-publish_at')
