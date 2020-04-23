@@ -169,6 +169,7 @@ const MenuWrapper = styled.div`
       @media(min-width: 768px) {
         margin: 0.3rem 0.8rem;
       }
+      
     }    
   }
 `;
