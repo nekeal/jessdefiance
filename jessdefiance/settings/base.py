@@ -156,6 +156,8 @@ SIMPLE_JWT = {
 
 THUMBNAIL_ALIASES = {
     '': {
-        'thumbnail': {'size': (300, 300), 'crop': False},
+        'small': {'size': (400, 0), 'crop': False},
+        'medium': {'size': (800, 0), 'crop': False},
+        'large': {'size': (1200, 0), 'crop': False},
     },
 }

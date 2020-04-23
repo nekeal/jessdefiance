@@ -5,14 +5,15 @@ from .models import Post, Tag, PostImage
 
 
 class PostImageSerializer(serializers.ModelSerializer):
-    thumbnail = serializers.SerializerMethodField()
+    thumbnails = serializers.SerializerMethodField()
 
-    def get_thumbnail(self, obj):
-        return self.context['request'].build_absolute_uri(obj.image['thumbnail'].url)
+    def get_thumbnails(self, obj):
+        thumbnails = ('small', 'medium', 'large')
+        return {name: self.context['request'].build_absolute_uri(obj.image[name].url) for name in thumbnails}
 
     class Meta:
         model = PostImage
-        fields = ('id', 'name', 'image', 'thumbnail')
+        fields = ('id', 'name', 'image', 'thumbnails')
 
 
 class TagSerializer(serializers.ModelSerializer):
