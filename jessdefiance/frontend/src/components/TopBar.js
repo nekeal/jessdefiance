@@ -162,6 +162,10 @@ const MenuWrapper = styled.div`
       display: block;
       margin: 0.3rem 0;
       
+      @media(max-width: 768px) {
+        font-size: 1.2rem;
+      }
+      
       @media(min-width: 768px) {
         margin: 0.3rem 0.8rem;
       }
