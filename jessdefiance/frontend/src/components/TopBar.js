@@ -47,6 +47,7 @@ const Wrapper = styled.header`
       padding: 0.2rem 0.6rem;
       color: #3C3C3C;      
       background-color: #F3DFD9;
+      cursor: pointer;
     }  
   }
   
@@ -162,7 +163,7 @@ const MenuWrapper = styled.div`
       margin: 0.3rem 0;
       
       @media(min-width: 768px) {
-        margin: 0.3rem 0.5rem;
+        margin: 0.3rem 0.8rem;
       }
     }    
   }
@@ -255,7 +256,11 @@ function TopBar({ backgroundImage, title, tags }) {
               <FontAwesomeIcon className="icon" icon={faSearch}/>
             </div>
             <div className="field">
-              <input type="text" value={searchText} onChange={e => setSearchText(e.target.value)} placeholder="Wpisz słowa klucze..."/>
+              <input type="text"
+                     value={searchText}
+                     onChange={e => setSearchText(e.target.value)}
+                     onKeyDown={e => e.keyCode === 13 && history.push("/?search=" + searchText) }
+                     placeholder="Wpisz słowa klucze..."/>
             </div>
           </SearchWrapper>
           <MenuWrapper isArticleView={isArticleView} expanded={menuExpanded} ref={menuRef}>
@@ -275,7 +280,9 @@ function TopBar({ backgroundImage, title, tags }) {
         </div>
       </NavBar>
       { title && <div className="title">{title}</div> }
-      { tags && <div className="tags">{tags.map(tag => <div className="tag" key={tag.id}>{tag.name}</div>)}</div>}
+      { tags && <div className="tags">{tags.map(tag =>
+        <div className="tag" key={tag.id} onClick={() => history.push(`/?tag=${tag.id}`)}>{tag.name}</div>)
+      }</div>}
     </Wrapper>
   );
 }

@@ -6,12 +6,12 @@ import { Link } from "react-router-dom";
 const AboutWrapper = styled.main`
   margin: 1rem;
   
-  .title {
-    font-family: LemonMilk;
-    text-align: center;
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-  }
+  //.title {
+  //  font-family: LemonMilk;
+  //  text-align: center;
+  //  font-size: 1.3rem;
+  //  margin-bottom: 1rem;
+  //}
   
   .image {
     width: 100%;
@@ -27,18 +27,16 @@ const AboutWrapper = styled.main`
   a {
     color: darkblue;
   }
-  
-  .content {
-    margin: 0 1rem;
-  }
 `;
 
 
 function ArticleTile() {
   return (
     <AboutWrapper>
-      <div className="title">O mnie</div>
-      <div className="image"><img src={jess} alt=""/></div>
+      {/*<div className="title">O mnie</div>*/}
+      <div className="image">
+        <Link to="/about"><img src={jess} alt=""/></Link>
+      </div>
       <div className="content">
         <p>Z tej strony Jess, stylista mody i pasjonatka sztuki. W zasadzie pasjonatka w wielu dziedzinach.</p>
         <p>Będziemy tutaj bawić się modą, poznawać i starać się ją zrozumieć. Niezależnie od tego co już wiesz i jak bardzo liczy się dla Ciebie to, z czym się ona wiąże, powinno się znaleźć tutaj coś dla Ciebie. Zaczniemy od podstaw, ale regularnie będziemy zaglądać też do świata high fashion.</p>

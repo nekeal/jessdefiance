@@ -22,17 +22,6 @@ const ArticleContent = styled.main`
     justify-content: space-between;
   }
   
-  .tag {
-    font-family: LemonMilk;
-    font-size: 1rem;
-    border-radius: 1rem;
-    margin-right: 0.6rem;
-    margin-bottom: 0.6rem;
-    padding: 0.2rem 0.6rem;
-    color: #F3DFD9;      
-    background-color: #3C3C3C;
-  }
-  
   .content {
     margin-top: 1rem;
     margin-bottom: 4rem;
@@ -53,19 +42,21 @@ function Article() {
   const [ galleryState, setGalleryState ] = useState({ photoIndex: 0, isOpen: false });
   const [ article, setArticle ] = useState(undefined);
   const [ disqus, setDisqus ] = useState(undefined);
+  const [ articleImages, setArticleImages ] = useState([]);
 
   const { photoIndex, isOpen } = galleryState;
-
-  console.log(article && article.images);
 
   useEffect(() => {
     getPost(id)
       .then(article => {
         let imgIndex = -1;
+        const { images, backgroundImage } = article;
+        articleImages.push(images.find(image => image.id === backgroundImage));
         const parsedContent = ReactHtmlParser(article.content, {
           transform: (node, index) => {
             if(node.name === "img") {
               imgIndex++;
+              articleImages.push(images.find(image => image.image === node.attribs.src));
               return <img src={node.attribs.src} alt="" onClick={() => setGalleryState(
                 { photoIndex: article.images.findIndex(image => image.image === node.attribs.src), isOpen: true })}
               />
@@ -104,20 +95,20 @@ function Article() {
         </ArticleContent>
         {isOpen && (
           <Lightbox
-            mainSrc={images[photoIndex].image}
-            nextSrc={images[(photoIndex + 1) % images.length].image}
-            prevSrc={images[(photoIndex + images.length - 1) % images.length].image}
+            mainSrc={articleImages[photoIndex].image}
+            nextSrc={articleImages[(photoIndex + 1) % articleImages.length].image}
+            prevSrc={articleImages[(photoIndex + articleImages.length - 1) % articleImages.length].image}
             onCloseRequest={() => setGalleryState({ isOpen: false })}
             onMovePrevRequest={() =>
               setGalleryState({
                 isOpen: true,
-                photoIndex: (photoIndex + images.length - 1) % images.length,
+                photoIndex: (photoIndex + articleImages.length - 1) % articleImages.length,
               })
             }
             onMoveNextRequest={() =>
               setGalleryState({
                 isOpen: true,
-                photoIndex: (photoIndex + 1) % images.length,
+                photoIndex: (photoIndex + 1) % articleImages.length,
               })
             }
           />

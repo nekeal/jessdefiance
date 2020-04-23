@@ -1,5 +1,7 @@
 export const mixins = {
   articleContent: `
+    font-family: SegoeUI, sans-serif;
+    
     h2 {
       font-family: LemonMilk;
       font-weight: normal;
@@ -48,6 +50,10 @@ export const mixins = {
       box-shadow: 7px 15px 3px 0px #CBB7B0; 
       margin: 2rem auto;
       display: block;
+    }
+    
+    .ql-align-center {
+      text-align: center;
     }
   `
 };

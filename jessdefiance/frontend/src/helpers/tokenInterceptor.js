@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default () => {
+export default history => {
 
   axios.interceptors.response.use( (response) => {
     // Return a successful response back to the calling service
@@ -17,6 +17,7 @@ export default () => {
 
     // Logout user if token refresh didn't work or there is no refresh-token
     if (error.config.url === '/auth/jwt/refresh/' || !refreshToken) {
+      history.push("/login");
       localStorage.removeItem('access-token');
       localStorage.removeItem('refresh-token');
 

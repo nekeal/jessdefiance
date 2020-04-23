@@ -42,6 +42,7 @@ const Article = styled.div`
     margin-bottom: 4rem;
     align-self: center;
     font-size: 1.5rem;
+    text-transform: uppercase;
   }
   
   .category {

@@ -33,11 +33,12 @@ const Container = styled.div`
   
     .content-top {
       display: flex;  
-      align-items: center;
-      max-width: 90%;
+      align-items: flex-start;
+      max-width: min(90%, 900px);
       margin: 0 auto;
       
       @media(max-width: 900px) {
+        align-items: center;
         flex-direction: column;
       } 
       
@@ -51,8 +52,12 @@ const Container = styled.div`
     }
     
     .content-bottom {
-      max-width: min(90%, 1000px);
+      max-width: min(90%, 900px);
       margin: 2rem auto;
+      
+      p {
+        margin-bottom: 2rem;
+      }
     }
     
     h2 {
@@ -79,6 +84,8 @@ const Container = styled.div`
     
     p {
       margin: 1rem 0;
+      font-size: 1.1rem;
+      font-weight: 600;
     }
     
     a {

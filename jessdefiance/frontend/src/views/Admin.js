@@ -54,7 +54,7 @@ function Admin() {
   const history = useHistory();
 
   useEffect(() => {
-    getPosts()
+    getPosts({})
       .then(articles => dispatch({ type: "SET_ARTICLES", payload: articles }));
   }, []);
 

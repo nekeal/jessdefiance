@@ -27,6 +27,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import c from 'classnames';
 import MuiAlert from "@material-ui/lab/Alert/Alert";
 import {mixins} from "../helpers/styles";
+import ConfirmationDialog from "../components/ConfirmationDialog";
 
 const Container = styled.main`    
   max-width: 1200px;
@@ -51,6 +52,13 @@ const Container = styled.main`
     margin-left: auto;
     display: flex;
     align-items: center;
+  }
+  
+  .ql-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
   }
   
   .post-images {
@@ -307,6 +315,15 @@ function AdminArticle() {
     editor.current.insertEmbed(postIndex, 'image', images[index].image);
   };
 
+  const insertXD = () => {
+    const selection = editor.current.getSelection();
+    const postIndex = selection ? selection.index : 0;
+
+    editor.current.insertText(postIndex, "xD");
+    editor.current.insertText(postIndex + 2, "xD", { script: "super" });
+    editor.current.insertText(postIndex + 4, " ", { script: null });
+  };
+
   const uploadTag = name => {
     addTag(name)
       .then(tagObj => dispatch({ type: "ADD_TAG", payload: tagObj }));
@@ -448,6 +465,9 @@ function AdminArticle() {
               </select>
             </span>
             <span className="ql-formats">
+              <button className="ql-align" value="center"/>
+            </span>
+            <span className="ql-formats">
               <button className="ql-bold"/>
               <button className="ql-italic"/>
             </span>
@@ -460,12 +480,20 @@ function AdminArticle() {
             <span className="ql-formats">
               <button className="ql-link"/>
             </span>
+            <span className="ql-formats">
+              <button className="ql-script" value="sub"/>
+              <button className="ql-script" value="super"/>
+            </span>
+            <span className="ql-formats">
+              <button onClick={insertXD}>xD<sup>xD</sup></button>
+            </span>
           </div>
           <div className="editor">
             <div id="editor"/>
           </div>
         </div>
       </Container>
+      {/*<ConfirmationDialog open={true} onClose={() => {}} onDecline={() => {}} onConfirm={() => {}} />*/}
       <ImageDialog open={imageDialogOpen} onAdd={uploadImage} onClose={() => dispatch({ type: "CLOSE_IMAGE_DIALOG" })}/>
       <TagDialog open={tagDialogOpen} onAdd={uploadTag} onClose={() => dispatch({ type: "CLOSE_TAG_DIALOG" })}/>
 

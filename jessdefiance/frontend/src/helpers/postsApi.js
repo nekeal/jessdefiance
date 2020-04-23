@@ -11,8 +11,8 @@ function fromResponse(post) {
   return { title, subtitle, slug, category, content, publishAt: publish_at, backgroundImage: background_image, tags, images, published };
 }
 
-export function getPosts(limit, offset, category, search) {
-  const query = queryString.stringify({ limit, offset, category, search });
+export function getPosts(params) {
+  const query = queryString.stringify(params);
 
   return axios
     .get(`/api/posts/?expand=images,tags&${query}`)
