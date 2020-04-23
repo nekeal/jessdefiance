@@ -254,7 +254,7 @@ function Home() {
       case articlesState.ERROR:
         return <div className="fetching-error">Błąd ładowania artykułów. Spróbuj ponownie później.</div>;
       case articlesState.ALL_LOADED:
-        return <div className="all-fetched">Nie ma więcej artykułów.</div>;
+        return <div className="all-fetched">Elo kurwa.</div>;
       default:
         return <></>
     }
