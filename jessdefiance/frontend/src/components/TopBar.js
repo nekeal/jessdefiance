@@ -200,6 +200,7 @@ const SearchWrapper = styled.div`
     cursor: pointer;
     z-index: 2;
     
+    
     .icon {
       color: ${props => props.isArticleView ? 'white' : '#3e3e3e'};
       font-size: 1.5rem;
