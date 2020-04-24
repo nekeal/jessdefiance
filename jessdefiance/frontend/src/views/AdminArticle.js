@@ -422,7 +422,7 @@ function AdminArticle() {
             images.map((image, index) =>
               image.image ?
                 <div className="image" key={index}>
-                  <img src={image.thumbnail} alt="" onClick={() => insertImage(index)}/>
+                  <img src={image.thumbnails.small} alt="" onClick={() => insertImage(index)}/>
                   <div className="name">{image.name}</div>
                   <IconButton className={c("set-background-image", {"background-image": values.backgroundImage === image.id})} onClick={() => setBackgroundImage(image.id)}>
                     <StarIcon/>
