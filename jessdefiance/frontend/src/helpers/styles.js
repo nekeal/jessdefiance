@@ -1,15 +1,24 @@
+export const colors = {
+  textColor: "#3C3C3C"
+};
+
+export const fonts = {
+  primaryFont: "'Montserrat', sans-serif",
+  secondaryFont: "LemonMilk"
+};
+
 export const mixins = {
   articleContent: `
     font-family: SegoeUI, sans-serif;
     
     h2 {
-      font-family: LemonMilk;
+      font-family: ${fonts.secondaryFont};
       font-weight: normal;
       margin: 1rem 0;
     }
     
     h3 {
-      font-family: LemonMilk;
+      font-family: ${fonts.secondaryFont};
       font-weight: normal;
       margin: 0.7rem 0;
     }
@@ -32,7 +41,7 @@ export const mixins = {
     ol li::before {
       display: inline-block;
       content: "#" counter(counter);
-      font-family: LemonMilk;
+      font-family: ${fonts.secondaryFont};
       width: 2rem;
     }
     

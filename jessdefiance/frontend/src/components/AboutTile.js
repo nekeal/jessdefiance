@@ -2,16 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import jess from "../images/jess.jpg";
 import { Link } from "react-router-dom";
+import {fonts} from "../helpers/styles";
 
 const AboutWrapper = styled.main`
   margin: 1rem;
-  
-  //.title {
-  //  font-family: LemonMilk;
-  //  text-align: center;
-  //  font-size: 1.3rem;
-  //  margin-bottom: 1rem;
-  //}
   
   .image {
     width: 100%;

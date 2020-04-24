@@ -7,6 +7,7 @@ import { faAngleDown, faSearch } from '@fortawesome/fontawesome-free-solid';
 import { Link } from 'react-router-dom';
 import { useOutsideClick } from "../helpers";
 import styled, { css } from 'styled-components';
+import {fonts} from "../helpers/styles";
 
 const Wrapper = styled.header`
   background: ${({ backgroundImage }) => backgroundImage ? `url(${backgroundImage}) rgba(0, 0, 0, 0.4)` : 'none'};
@@ -16,7 +17,7 @@ const Wrapper = styled.header`
   background-blend-mode: multiply;
   
   .title {
-    font-family: LemonMilk;
+    font-family: ${fonts.secondaryFont};
     font-size: 1.4rem;
     color: white;
     width: 75%;
@@ -39,7 +40,7 @@ const Wrapper = styled.header`
 
     .tag {
       display: flex;
-      font-family: LemonMilk;
+      font-family: ${fonts.secondaryFont};
       font-size: 1rem;
       border-radius: 1rem;
       margin-right: 0.6rem;
@@ -122,7 +123,7 @@ const MenuWrapper = styled.div`
   }
   
   .menu {
-    font-family: LemonMilk;
+    font-family: ${fonts.secondaryFont};
     position: absolute;
     top: 0;
     right: 0;

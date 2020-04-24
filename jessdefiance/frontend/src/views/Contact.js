@@ -5,12 +5,13 @@ import { faInstagramSquare } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/fontawesome-free-solid';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from 'react-router-dom';
+import {fonts} from "../helpers/styles";
 
 const ContactWrapper = styled.main`
   margin: 1rem;
 
   .title {
-    font-family: LemonMilk;
+    font-family: ${fonts.secondaryFont};
     text-align: center;
     font-size: 1.3rem;
     margin-bottom: 1rem;

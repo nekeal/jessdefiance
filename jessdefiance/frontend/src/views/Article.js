@@ -9,6 +9,7 @@ import { getPost } from "../helpers/postsApi";
 import ReactHtmlParser from 'react-html-parser';
 import { articleDate } from "../helpers/dateUtil";
 import {mixins} from "../helpers/styles";
+import {fonts} from "../helpers/styles";
 
 const ArticleContent = styled.main`
   width: 80%;
@@ -17,7 +18,7 @@ const ArticleContent = styled.main`
   font-size: 1.1rem;
   
   .info {
-    font-family: LemonMilk;
+    font-family: ${fonts.secondaryFont};
     display: flex;
     justify-content: space-between;
   }
@@ -63,6 +64,9 @@ function Article() {
             }
           }
         });
+
+        setArticleImages(articleImages);
+
 
         setDisqus({
           shortname: "jess-defiance",

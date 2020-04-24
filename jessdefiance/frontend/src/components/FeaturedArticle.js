@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import {articleDate} from "../helpers/dateUtil";
+import {fonts} from "../helpers/styles";
 
 const Article = styled.div`
   color: white;
@@ -21,14 +22,14 @@ const Article = styled.div`
   }
   
   .publication-date {
-    font-family: LemonMilk;
+    font-family: ${fonts.secondaryFont};
     margin: 0.7rem;
     font-size: 1.5rem;
     align-self: flex-start;
   }
   
   .title {
-    font-family: LemonMilk;
+    font-family: ${fonts.secondaryFont};
     margin-top: 4rem;
     margin-bottom: 0.8rem;
     align-self: center;
@@ -46,7 +47,7 @@ const Article = styled.div`
   }
   
   .category {
-    font-family: LemonMilk;
+    font-family: ${fonts.secondaryFont};
     font-size: 1.5rem;
     margin: 0.7rem;
     align-self: flex-end;

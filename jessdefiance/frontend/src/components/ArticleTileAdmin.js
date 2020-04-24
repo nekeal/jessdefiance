@@ -3,6 +3,7 @@ import { Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, 
 import styled from "styled-components";
 import {adminDate} from "../helpers/dateUtil";
 import { useHistory } from "react-router-dom";
+import {fonts} from "../helpers/styles";
 
 const Container = styled(Card)`
   max-width: 500px;
@@ -16,7 +17,7 @@ const Container = styled(Card)`
   }
     
   .tag {
-    font-family: LemonMilk;
+    font-family: ${fonts.secondaryFont};
     font-size: 1rem;
     border-radius: 1rem;
     margin-right: 0.6rem;

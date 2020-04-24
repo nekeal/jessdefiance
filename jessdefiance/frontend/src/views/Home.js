@@ -1,22 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {useParams, useLocation, useHistory, Link} from 'react-router-dom';
 import { FeaturedArticle, ArticleTile, PhantomArticleTile, AboutTile, TopBar } from "../components";
-import styled from 'styled-components';
 import debounce from "lodash.debounce";
 import {getPosts, getTags} from '../helpers/postsApi';
 import c from "classnames";
-
-// const articlesMocks = [
-//   { id: 1, title: 'Jaki jest Twój typ sylwetki?', subtitle: 'Lorem ipsum dolor sit amet', publicationDate: '01 12 19', category: '#fashion', backgroundImage: 'https://picsum.photos/1600/1200'},
-//   { id: 2, title: 'Thy Mighty Contract', subtitle: 'Lorem ipsum dolor sit amet', publicationDate: '02 12 19', category: '#fashion', backgroundImage: 'https://picsum.photos/780/600'},
-//   { id: 3, title: 'Non Serviam', subtitle: 'Lorem ipsum dolor sit amet', publicationDate: '03 12 19', category: '#fashion', backgroundImage: 'https://picsum.photos/790/600'},
-//   { id: 4, title: 'Triarchy of the Lost Lovers', subtitle: 'Lorem ipsum dolor sit amet', publicationDate: '04 12 19', category: '#fashion', backgroundImage: 'https://picsum.photos/800/600'},
-//   { id: 5, title: 'A Dead Poem', subtitle: 'Lorem ipsum dolor sit amet', publicationDate: '05 12 19', category: '#fashion', backgroundImage: 'https://picsum.photos/810/600'},
-//   { id: 6, title: 'Sleep of the Angels', subtitle: 'Lorem ipsum dolor sit amet', publicationDate: '06 12 19', category: '#fashion', backgroundImage: 'https://picsum.photos/820/600'},
-//   { id: 7, title: 'Khronos', subtitle: 'Lorem ipsum dolor sit amet', publicationDate: '07 12 19', category: '#fashion', backgroundImage: 'https://picsum.photos/830/600'},
-//   { id: 8, title: 'Genesis', subtitle: 'Lorem ipsum dolor sit amet', publicationDate: '08 12 19', category: '#fashion', backgroundImage: 'https://picsum.photos/815/600'},
-//   { id: 9, title: 'Sanctus Diavolos', subtitle: 'Lorem ipsum dolor sit amet', publicationDate: '09 12 19', category: '#fashion', backgroundImage: 'https://picsum.photos/825/600'},
-// ];
+import {fonts} from "../helpers/styles";
+import styled from "styled-components";
 
 const Container = styled.div`
   .article-tile-wrapper {
@@ -125,7 +114,7 @@ const Container = styled.div`
   }
   
   .tag {
-    font-family: LemonMilk;
+    font-family: ${fonts.secondaryFont};
     font-size: 1rem;
     border-radius: 1rem;
     margin-right: 0.6rem;
@@ -145,7 +134,7 @@ const Container = styled.div`
   .about-header {
     flex-basis: 33%;
     flex-shrink: 0;
-    font-family: LemonMilk;
+    font-family: ${fonts.secondaryFont};
     text-align: center;
     font-size: 1.3rem;
     align-self: flex-end;

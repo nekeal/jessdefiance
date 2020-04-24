@@ -28,15 +28,16 @@ import c from 'classnames';
 import MuiAlert from "@material-ui/lab/Alert/Alert";
 import {mixins} from "../helpers/styles";
 import ConfirmationDialog from "../components/ConfirmationDialog";
+import {fonts} from "../helpers/styles";
 
 const Container = styled.main`    
   max-width: 1200px;
   margin: 0 auto;
   
   .form-line {
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
   }
   
   .form-field {
@@ -51,7 +52,12 @@ const Container = styled.main`
   .form-submit {
     margin-left: auto;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-end;
+    
+    button {
+      margin-bottom: 0.5rem;
+    }
   }
   
   .ql-toolbar {
@@ -123,7 +129,7 @@ const Container = styled.main`
   }
   
   .tag {
-    font-family: LemonMilk;
+    font-family: ${fonts.secondaryFont};
     font-size: 1.2rem;
     border-radius: 1.5rem;
     margin-left: 0.7rem;
@@ -353,7 +359,7 @@ function AdminArticle() {
 
             <div className="form-field" style={{width: "7%"}}>
               <InputLabel id="category-label" className="MuiInputLabel-shrink">Kategoria</InputLabel>
-              <Controller name="category" defaultValue="NOTES" control={control} rules={{ required: "Pole jest wymagane"}} as={
+              <Controller name="category" defaultValue="FASHION" control={control} rules={{ required: "Pole jest wymagane"}} as={
                 <Select labelId="category-label">
                   <MenuItem value="FASHION">Fashion</MenuItem>
                   <MenuItem value="TRENDS">Trends</MenuItem>
@@ -384,6 +390,12 @@ function AdminArticle() {
             <div className="form-submit">
               <Button variant="contained" color="primary" type="submit">
                 Zapisz zmiany
+              </Button>
+              <Button variant="contained" color="secondary" type="submit" onClick={e => {
+                e.preventDefault();
+                handleSubmit(onSubmit);
+              }}>
+                Zapisz i wróć do listy
               </Button>
             </div>
 

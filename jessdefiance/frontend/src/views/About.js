@@ -3,6 +3,7 @@ import { TopBar, AboutTile } from "../components";
 import styled from 'styled-components';
 import jess from "../images/jess.jpg";
 import { Link } from "react-router-dom";
+import {fonts} from "../helpers/styles";
 
 const Container = styled.div`
   .about {
@@ -61,7 +62,7 @@ const Container = styled.div`
     }
     
     h2 {
-      font-family: LemonMilk;
+      font-family: ${fonts.secondaryFont};
       font-size: 1.3rem;
       margin-top: 0;
       margin-bottom: 1rem;
@@ -73,7 +74,7 @@ const Container = styled.div`
     }
     
     h3 {
-      font-family: LemonMilk;
+      font-family: ${fonts.secondaryFont};
       font-size: 1rem;
       margin: 1rem 0;
       

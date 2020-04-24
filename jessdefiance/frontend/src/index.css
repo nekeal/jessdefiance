@@ -10,11 +10,9 @@
 
 body {
   margin: 0;
-  font-family: SegoeUI, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  color: #3C3C3C;
 }
 
 a {
