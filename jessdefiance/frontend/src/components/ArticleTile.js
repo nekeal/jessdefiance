@@ -56,7 +56,7 @@ const Article = styled.div`
 function ArticleTile({ article }) {
   const { title, subtitle, category, images, backgroundImage, tags, publishAt, slug } = article;
   return (
-    <Article image={images.find(image => image.id === backgroundImage).image}>
+    <Article image={images.find(image => image.id === backgroundImage).thumbnails.small}>
       <div className="publication-date">
         {articleDate(publishAt)}
       </div>
@@ -64,8 +64,7 @@ function ArticleTile({ article }) {
         <Link to={'/article/' + slug}>
           <div className="title">{title}</div>
           {
-            article.subtitle &&
-            <div className="subtitle">{article.subtitle}</div>
+            subtitle && <div className="subtitle">{subtitle}</div>
           }
         </Link>
       </div>

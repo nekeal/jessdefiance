@@ -57,7 +57,7 @@ const Article = styled.div`
 function FeaturedArticle({ article }) {
   const { title, subtitle, category, images, backgroundImage, tags, publishAt, slug } = article;
   return (
-    <Article image={images.find(image => image.id === backgroundImage).image}>
+    <Article image={images.find(image => image.id === backgroundImage).thumbnails.large}>
       <div className="article-data">
         <div className="publication-date">{articleDate(publishAt)}</div>
         <div className="title">

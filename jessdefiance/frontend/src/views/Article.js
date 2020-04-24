@@ -57,9 +57,10 @@ function Article() {
           transform: (node, index) => {
             if(node.name === "img") {
               imgIndex++;
-              articleImages.push(images.find(image => image.image === node.attribs.src));
-              return <img src={node.attribs.src} alt="" onClick={() => setGalleryState(
-                { photoIndex: article.images.findIndex(image => image.image === node.attribs.src), isOpen: true })}
+              const img = images.find(image => image.image === node.attribs.src);
+              articleImages.push(img);
+              return <img src={img.thumbnails.large} alt="" onClick={() => setGalleryState(
+                { photoIndex: article.images.indexOf(img), isOpen: true })}
               />
             }
           }

@@ -86,7 +86,6 @@ const Container = styled.div`
     p {
       margin: 1rem 0;
       font-size: 1.1rem;
-      font-weight: 600;
     }
     
     a {
