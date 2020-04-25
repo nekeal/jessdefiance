@@ -332,7 +332,7 @@ function AdminArticle() {
   };
 
   const removeImageInit = id => {
-    const src = images.find(image => image.id === id).image;
+    const src = images.find(image => image.id === id).thumbnails.large;
     if(editor.current.root.innerHTML.includes(src)) {
       dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Nie można usunąć zdjęcia, bo znajduje się jeszcze w artykule" } });
     } else {
@@ -355,7 +355,7 @@ function AdminArticle() {
     const selection = editor.current.getSelection();
     const postIndex = selection ? selection.index : 0;
 
-    editor.current.insertEmbed(postIndex, 'image', images[index].image);
+    editor.current.insertEmbed(postIndex, 'image', images[index].thumbnails.large);
   };
 
   const insertXD = () => {

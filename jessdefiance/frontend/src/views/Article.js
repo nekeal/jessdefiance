@@ -57,7 +57,7 @@ function Article() {
           transform: (node, index) => {
             if(node.name === "img") {
               imgIndex++;
-              const img = images.find(image => image.image === node.attribs.src);
+              const img = images.find(image => image.thumbnails.large === node.attribs.src);
               articleImages.push(img);
               return <img src={img.thumbnails.large} alt="" onClick={() => setGalleryState(
                 { photoIndex: article.images.indexOf(img), isOpen: true })}
@@ -87,7 +87,7 @@ function Article() {
     const { title, subtitle, slug, category, content, publishAt, tags, images, backgroundImage } = article;
     return (
       <>
-        <TopBar title={title} tags={tags} backgroundImage={images.find(image => image.id === backgroundImage).image}/>
+        <TopBar title={title} tags={tags} backgroundImage={images.find(image => image.id === backgroundImage).thumbnails.large}/>
         <ArticleContent>
           <div className="info">
             <div className="publication-date">{articleDate(publishAt)}</div>
