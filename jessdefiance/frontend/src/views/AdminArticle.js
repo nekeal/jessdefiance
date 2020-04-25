@@ -30,7 +30,6 @@ import {
   getPosts
 } from "../helpers/postsApi";
 import { useParams, useHistory } from 'react-router-dom';
-import generateSlug from 'slug';
 import ImageDialog from "../components/ImageDialog";
 import TagDialog from "../components/TagDialog";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -294,7 +293,7 @@ function AdminArticle() {
 
   const onSubmit = (data, event, redirect) => {
     const { title, subtitle, category, publishAt, published, backgroundImage } = data;
-    const slug = state.article.slug || generateSlug(title);
+    const slug = state.article.slug || title.toLowerCase().replace(/[^a-z]+/g,"-");
     const post = {
       title, subtitle, slug, category, publishAt, published, backgroundImage,
       content: editor.current.root.innerHTML,
