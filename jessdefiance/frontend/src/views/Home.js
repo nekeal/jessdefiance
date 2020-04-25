@@ -205,9 +205,9 @@ function Home() {
           if(newArticles.length < paginateBy) {
             setFetchingState(articlesState.ALL_LOADED);
           } else {
-            setArticles(articles.concat(newArticles));
             setFetchingState(articlesState.IDLE);
           }
+          setArticles(articles.concat(newArticles));
         })
         .catch(error => {
           setFetchingState(articlesState.ERROR);
