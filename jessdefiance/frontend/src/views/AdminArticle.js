@@ -18,8 +18,18 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import StarIcon from "@material-ui/icons/Star";
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { getPost, addImage, deleteImage, updatePost, addPost, getTags, addTag, deleteTag } from "../helpers/postsApi";
-import { useParams } from 'react-router-dom';
+import {
+  getPost,
+  addImage,
+  deleteImage,
+  updatePost,
+  addPost,
+  getTags,
+  addTag,
+  deleteTag,
+  getPosts
+} from "../helpers/postsApi";
+import { useParams, useHistory } from 'react-router-dom';
 import generateSlug from 'slug';
 import ImageDialog from "../components/ImageDialog";
 import TagDialog from "../components/TagDialog";
@@ -172,6 +182,11 @@ const initialState = {
   allTags: [],
   imageDialogOpen: false,
   tagDialogOpen: false,
+  confirmationDialog: {
+    open: false,
+    onConfirm: () => {},
+    onDecline: () => {}
+  },
   operationInfo: { open: false },
 };
 
@@ -221,6 +236,11 @@ function reducer(state, action) {
       return { ...state, operationInfo: { open: true, ...payload } };
     case "DELETE_OPERATION_INFO":
       return { ...state, operationInfo: { open: false } };
+    case "OPEN_CONFIRMATION_DIALOG":
+      const { onConfirm, onDecline } = payload;
+      return { ...state, confirmationDialog: { open: true, onConfirm, onDecline } };
+    case "CLOSE_CONFIRMATION_DIALOG":
+      return { ...state, confirmationDialog: { open: false } };
   }
 }
 
@@ -235,8 +255,9 @@ function AdminArticle() {
   const editor = useRef();
   const { id } = useParams();
   const values = getValues();
+  const history = useHistory();
 
-  const { article: { images, tags }, allTags, imageDialogOpen, tagDialogOpen, operationInfo } = state;
+  const { article: { images, tags }, allTags, imageDialogOpen, tagDialogOpen, confirmationDialog, operationInfo } = state;
 
   useEffect(() => {
     register({ name: "backgroundImage"});
@@ -271,7 +292,7 @@ function AdminArticle() {
     }
   }, [id]);
 
-  const onSubmit = data => {
+  const onSubmit = (data, event, redirect) => {
     const { title, subtitle, category, publishAt, published, backgroundImage } = data;
     const slug = state.article.slug || generateSlug(title);
     const post = {
@@ -283,11 +304,19 @@ function AdminArticle() {
 
     if(state.article.slug) {
       updatePost(post)
-        .then(() => dispatch({ type: "SET_OPERATION_INFO", payload: { type: "success", message: "Pomyślnie zapisano zmiany" } }))
+        .then(() => {
+          redirect
+            ? history.push("/panel")
+            : dispatch({ type: "SET_OPERATION_INFO", payload: { type: "success", message: "Pomyślnie zapisano zmiany" } })
+        })
         .catch(() => dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Wystąpił błąd przy zapisywaniu zmian"  } }));
     } else {
       addPost(post)
-        .then(() => dispatch({ type: "SET_OPERATION_INFO", payload: { type: "success", message: "Pomyślnie dodano post" } }))
+        .then(() => {
+          redirect
+            ? history.push("/panel")
+            : dispatch({ type: "SET_OPERATION_INFO", payload: { type: "success", message: "Pomyślnie dodano post" } })
+        })
         .catch(() => dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Wystąpił błąd przy dodawaniu posta"  } }))
     }
   };
@@ -302,8 +331,16 @@ function AdminArticle() {
       });
   };
 
-  const removeImage = id => {
-    // prevent from deleting image which is in article
+  const removeImageInit = id => {
+    const src = images.find(image => image.id === id).image;
+    if(editor.current.root.innerHTML.includes(src)) {
+      dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Nie można usunąć zdjęcia, bo znajduje się jeszcze w artykule" } });
+    } else {
+      dispatch({ type: "OPEN_CONFIRMATION_DIALOG", payload: { onConfirm: () => removeImageConfirm(id), onDecline: () => {} } });
+    }
+  };
+
+  const removeImageConfirm = id => {
     deleteImage(id)
       .then(response => dispatch({ type: "REMOVE_IMAGE", payload: id }))
       .catch(() => dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Wystąpił błąd przy usuwaniu zdjęcia" } }));
@@ -335,7 +372,18 @@ function AdminArticle() {
       .then(tagObj => dispatch({ type: "ADD_TAG", payload: tagObj }));
   };
 
-  const removeTag = id => {
+  const removeTagInit = id => {
+    getPosts({ tag: id })
+      .then(response => {
+        if(response.length !== 0) {
+          dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Nie można usunąć tagu, bo znajduje się w innych artykułach" } });
+        } else {
+          dispatch({ type: "OPEN_CONFIRMATION_DIALOG", payload: { onConfirm: () => removeTagConfirm(id), onDecline: () => {} } });
+        }
+      });
+  };
+
+  const removeTagConfirm = id => {
     deleteTag(id)
       .then(response => dispatch({ type: "DELETE_TAG", payload: id }));
   };
@@ -391,10 +439,7 @@ function AdminArticle() {
               <Button variant="contained" color="primary" type="submit">
                 Zapisz zmiany
               </Button>
-              <Button variant="contained" color="secondary" type="submit" onClick={e => {
-                e.preventDefault();
-                handleSubmit(onSubmit);
-              }}>
+              <Button variant="contained" color="secondary" type="submit" onClick={e => { e.preventDefault(); onSubmit(getValues(), e,true); }}>
                 Zapisz i wróć do listy
               </Button>
             </div>
@@ -429,7 +474,7 @@ function AdminArticle() {
                   </IconButton>
                   {
                     values && values.backgroundImage !== image.id &&
-                    <IconButton className="delete-image" onClick={() => removeImage(image.id)}>
+                    <IconButton className="delete-image" onClick={() => removeImageInit(image.id)}>
                       <DeleteIcon/>
                     </IconButton>
                   }
@@ -455,7 +500,7 @@ function AdminArticle() {
                   {tag.name}
                   {
                     !isInPost &&
-                      <IconButton className="delete-tag" onClick={e => { e.stopPropagation(); removeTag(tag.id); }}>
+                      <IconButton className="delete-tag" onClick={e => { e.stopPropagation(); removeTagInit(tag.id); }}>
                         <DeleteIcon/>
                       </IconButton>
                   }
@@ -505,7 +550,11 @@ function AdminArticle() {
           </div>
         </div>
       </Container>
-      {/*<ConfirmationDialog open={true} onClose={() => {}} onDecline={() => {}} onConfirm={() => {}} />*/}
+      <ConfirmationDialog
+        open={confirmationDialog.open}
+        onDecline={() => { dispatch({ type: "CLOSE_CONFIRMATION_DIALOG" }); confirmationDialog.onDecline(); }}
+        onConfirm={() => { dispatch({ type: "CLOSE_CONFIRMATION_DIALOG" }); confirmationDialog.onConfirm(); }}
+      />
       <ImageDialog open={imageDialogOpen} onAdd={uploadImage} onClose={() => dispatch({ type: "CLOSE_IMAGE_DIALOG" })}/>
       <TagDialog open={tagDialogOpen} onAdd={uploadTag} onClose={() => dispatch({ type: "CLOSE_TAG_DIALOG" })}/>
 

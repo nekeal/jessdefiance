@@ -4,18 +4,17 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, B
 function ConfirmationDialog({ open, onClose, onConfirm, onDecline }) {
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Czy na pewno?</DialogTitle>
+      <DialogTitle>Potwierdzenie</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Let Google help apps determine location. This means sending anonymous location data to
-          Google, even when no apps are running.
+          Czy na pewno chcesz usunąć ten element?
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onDecline} color="primary">
+        <Button onClick={onDecline} color="primary" autoFocus>
           Nie
         </Button>
-        <Button onClick={onConfirm} color="primary" autoFocus>
+        <Button onClick={onConfirm} color="primary">
           Tak
         </Button>
       </DialogActions>

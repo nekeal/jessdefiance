@@ -202,7 +202,7 @@ function Home() {
       getPosts({ limit: paginateBy, offset: 9, category: category && category.toUpperCase(), search, tag: selectedTags })
         .then(newArticles => {
           setOffset(offset + paginateBy);
-          if(newArticles.length === 0) {
+          if(newArticles.length < paginateBy) {
             setFetchingState(articlesState.ALL_LOADED);
           } else {
             setArticles(articles.concat(newArticles));

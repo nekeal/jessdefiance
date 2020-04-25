@@ -8,8 +8,13 @@ import {fonts} from "../helpers/styles";
 const Container = styled(Card)`
   max-width: 500px;
   margin-right: 1rem;
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
+  
+  p {
+    margin-bottom: 0.5rem;
+  }
   
   .tags {
     display: flex;
@@ -33,6 +38,7 @@ const Container = styled(Card)`
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
+    font-size: 0.9rem;
   }
   
   .publish {
@@ -51,7 +57,7 @@ function ArticleTileAdmin({ article, onDelete, onPublish, onUnpublish }) {
           component="img"
           alt=""
           height="200"
-          image={images.find(image => image.id === backgroundImage).image}
+          image={images.find(image => image.id === backgroundImage).thumbnails.small}
           title={title}
         />
         <CardContent>
@@ -69,7 +75,7 @@ function ArticleTileAdmin({ article, onDelete, onPublish, onUnpublish }) {
           {
             published ?
               <>
-                Opublikowano
+                <span style={{ marginRight: "0.3rem" }}>Opublikowano</span>
                 { adminDate(publishAt) }
                 <Button size="small" className="publish" onClick={() => onUnpublish(slug)}>Cofnij</Button>
               </> :

@@ -23,6 +23,8 @@ const Container = styled.div`
     
     img {
       width: 100%;
+      height: calc(100% - 1.5rem);
+      object-fit: cover;
       border-radius: 1rem;
       box-shadow: 7px 15px 3px 0px #CBB7B0;
     }
@@ -34,7 +36,7 @@ const Container = styled.div`
   
     .content-top {
       display: flex;  
-      align-items: flex-start;
+      align-items: stretch;
       max-width: min(90%, 900px);
       margin: 0 auto;
       

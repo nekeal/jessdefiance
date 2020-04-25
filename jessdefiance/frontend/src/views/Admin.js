@@ -5,14 +5,21 @@ import {deletePost, getPosts, partialUpdatePost} from "../helpers/postsApi";
 import ArticleTileAdmin from "../components/ArticleTileAdmin";
 import MuiAlert from '@material-ui/lab/Alert';
 import { useHistory } from "react-router-dom";
+import ConfirmationDialog from "../components/ConfirmationDialog";
+import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   padding-top: 1rem;
   
-  .article-add {
-      margin-bottom: 1rem;
+  .panel-actions {
+    display: flex;
+    margin-bottom: 1rem;
+    
+    button {
+      margin-right: 1rem;
+    }
   }
   
   .articles {
@@ -27,7 +34,12 @@ function Alert(props) {
 
 const initialState = {
   articles: [],
-  operationInfo: { open: false }
+  operationInfo: { open: false },
+  confirmationDialog: {
+    open: false,
+    onConfirm: () => {},
+    onDecline: () => {}
+  }
 };
 
 function reducer(state, action) {
@@ -43,13 +55,18 @@ function reducer(state, action) {
       return { ...state, operationInfo: { open: true, ...payload } };
     case "DELETE_OPERATION_INFO":
       return { ...state, operationInfo: { open: false } };
+    case "OPEN_CONFIRMATION_DIALOG":
+      const { onConfirm, onDecline } = payload;
+      return { ...state, confirmationDialog: { open: true, onConfirm, onDecline } };
+    case "CLOSE_CONFIRMATION_DIALOG":
+      return { ...state, confirmationDialog: { open: false } }
   }
 }
 
 function Admin() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const { articles, operationInfo } = state;
+  const { articles, operationInfo, confirmationDialog } = state;
 
   const history = useHistory();
 
@@ -77,7 +94,11 @@ function Admin() {
 
   };
 
-  const removePost = slug => {
+  const removePostInit = slug => {
+    dispatch({ type: "OPEN_CONFIRMATION_DIALOG", payload: { onConfirm: () => removePostConfirm(slug), onDecline: () => {} } })
+  };
+
+  const removePostConfirm = slug => {
     deletePost(slug)
       .then(() => {
         dispatch({ type: "DELETE_ARTICLE", payload: slug });
@@ -88,12 +109,20 @@ function Admin() {
 
   return (
     <Container>
-      <Button variant="contained" color="primary" className="article-add" onClick={() => history.push("/panel/article/add")}>Dodaj artykuł</Button>
+      <div className="panel-actions">
+        <Button variant="contained" color="primary" onClick={() => history.push("/panel/article/add")}>Dodaj artykuł</Button>
+        <Button variant="contained" color="secondary" onClick={() => history.push("/")}>Wróć do strony głównej</Button>
+      </div>
       <div className="articles">
         {
-          articles.map(article => <ArticleTileAdmin article={article} onDelete={removePost} onPublish={publishNow} onUnpublish={unpublish} key={article.slug}/> )
+          articles.map(article => <ArticleTileAdmin article={article} onDelete={removePostInit} onPublish={publishNow} onUnpublish={unpublish} key={article.slug}/> )
         }
       </div>
+      <ConfirmationDialog
+        open={confirmationDialog.open}
+        onDecline={() => { dispatch({ type: "CLOSE_CONFIRMATION_DIALOG" }); confirmationDialog.onDecline(); }}
+        onConfirm={() => { dispatch({ type: "CLOSE_CONFIRMATION_DIALOG" }); confirmationDialog.onConfirm(); }}
+      />
       <Snackbar
         open={operationInfo.open}
         autoHideDuration={6000}
