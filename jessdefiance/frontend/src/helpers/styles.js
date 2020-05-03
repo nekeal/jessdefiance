@@ -43,6 +43,7 @@ export const mixins = {
     ol li {
       counter-increment: counter;
       margin-bottom: 0.5rem;
+      line-height: 1.5;
     }
     
     ol li::before {
