@@ -4,7 +4,7 @@ import { FeaturedArticle, ArticleTile, PhantomArticleTile, AboutTile, TopBar } f
 import debounce from "lodash.debounce";
 import {getPosts, getTags} from '../helpers/postsApi';
 import c from "classnames";
-import {fonts} from "../helpers/styles";
+import {colors, fonts, mixins} from "../helpers/styles";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -112,24 +112,10 @@ const Container = styled.div`
       flex-basis: 100%;
     }
   }
-  
+
   .tag {
-    font-family: ${fonts.secondaryFont};
-    font-size: 1rem;
-    border-radius: 1rem;
-    margin-right: 0.6rem;
-    margin-bottom: 0.6rem;
-    padding: 0.2rem 0.6rem;
-    color: #F3DFD9;      
-    background-color: #3C3C3C;
-    flex-shrink: 0;
-    cursor: pointer;
-    
-    &--selected {
-      background-color: #F3DFD9;      
-      color: #3C3C3C;
-    }
-  }
+    ${mixins.tag};
+  }  
   
   .about-header {
     flex-basis: 33%;

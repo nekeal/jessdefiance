@@ -27,7 +27,8 @@ import {
   getTags,
   addTag,
   deleteTag,
-  getPosts
+  getPosts,
+  partialUpdatePost
 } from "../helpers/postsApi";
 import { useParams, useHistory } from 'react-router-dom';
 import ImageDialog from "../components/ImageDialog";
@@ -294,6 +295,12 @@ function AdminArticle() {
   const onSubmit = (data, event, redirect) => {
     const { title, subtitle, category, publishAt, published, backgroundImage } = data;
     const slug = state.article.slug || title.toLowerCase().replace(/[^a-z]+/g,"-");
+
+    if(!backgroundImage) {
+      dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "O nieeee Jessi, tym razem nie wypierdolisz bloga, ustaw zdjęcie główne XD^XD"  } });
+      return;
+    }
+
     const post = {
       title, subtitle, slug, category, publishAt, published, backgroundImage,
       content: editor.current.root.innerHTML,
@@ -345,9 +352,16 @@ function AdminArticle() {
       .catch(() => dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Wystąpił błąd przy usuwaniu zdjęcia" } }));
   };
 
-  const setBackgroundImage = id => {
-    setValue("backgroundImage", id);
-    dispatch({ type: "SET_BACKGROUND_IMAGE" });
+  const setBackgroundImage = imgId => {
+    partialUpdatePost(id, { background_image: imgId })
+      .then(() => {
+        setValue("backgroundImage", imgId);
+        dispatch({ type: "SET_OPERATION_INFO", payload: { type: "success", message: "Udało się zmienić zdjęcie główne" } });
+        dispatch({ type: "SET_BACKGROUND_IMAGE" });
+      })
+      .catch(() => {
+        dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Nie udało się zmienić zdjęcia głównego" } });
+      });
   };
 
   const insertImage = index => {
@@ -517,6 +531,10 @@ function AdminArticle() {
               <select className="ql-header" defaultValue="">
                 <option value="2"/>
                 <option value="3"/>
+                <option value=""/>
+              </select>
+              <select className="ql-size" defaultValue="">
+                <option value="small"/>
                 <option value=""/>
               </select>
             </span>

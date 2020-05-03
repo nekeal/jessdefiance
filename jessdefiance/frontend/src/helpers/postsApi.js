@@ -7,8 +7,9 @@ function toRequest(post) {
 }
 
 function fromResponse(post) {
-  const { title, subtitle, slug, category, content, publish_at, background_image, tags, images, published } = post;
-  return { title, subtitle, slug, category, content, publishAt: publish_at, backgroundImage: background_image, tags, images, published };
+  console.log(post);
+  const { title, subtitle, slug, category, content, publish_at, created_at, background_image, tags, images, published } = post;
+  return { title, subtitle, slug, category, content, publishAt: publish_at, createdAt: created_at, backgroundImage: background_image, tags, images, published };
 }
 
 export function getPosts(params) {

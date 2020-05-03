@@ -21,6 +21,10 @@ const AboutWrapper = styled.main`
   a {
     color: darkblue;
   }
+  
+  p {
+    line-height: 1.5;
+  }
 `;
 
 

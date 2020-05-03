@@ -1,5 +1,10 @@
+import { css } from 'styled-components';
+
 export const colors = {
-  textColor: "#3C3C3C"
+  textColor: "#3C3C3C",
+  backgroundColor: "#FFFFFF",
+  backgroundAccent: "#F3DFD9",
+  shadowColor: "#C7B0AB"
 };
 
 export const fonts = {
@@ -8,8 +13,8 @@ export const fonts = {
 };
 
 export const mixins = {
-  articleContent: `
-    font-family: SegoeUI, sans-serif;
+  articleContent: css`
+    font-family: ${fonts.primaryFont};
     
     h2 {
       font-family: ${fonts.secondaryFont};
@@ -24,8 +29,9 @@ export const mixins = {
     }
     
     p {
-      font-family: SegoeUI, sans-serif;
+      font-family: ${fonts.primaryFont};
       margin: 0.4rem 0;
+      line-height: 1.7;
     }
     
     ol {
@@ -36,6 +42,7 @@ export const mixins = {
     
     ol li {
       counter-increment: counter;
+      margin-bottom: 0.5rem;
     }
     
     ol li::before {
@@ -63,6 +70,27 @@ export const mixins = {
     
     .ql-align-center {
       text-align: center;
+    }
+    
+    .ql-size-small {
+      font-size: 0.9rem;
+    }
+  `,
+  tag: css`
+    font-family: ${fonts.secondaryFont};
+    font-size: 1rem;
+    border-radius: 1rem;
+    margin-right: 0.6rem;
+    margin-bottom: 0.6rem;
+    padding: 0.2rem 0.6rem;
+    color: ${colors.backgroundColor};      
+    background-color: ${colors.textColor};
+    flex-shrink: 0;
+    cursor: pointer;
+    
+    &--selected {
+      background-color: ${colors.backgroundAccent};      
+      color: ${colors.textColor};
     }
   `
 };

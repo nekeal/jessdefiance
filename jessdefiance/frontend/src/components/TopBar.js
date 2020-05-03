@@ -7,7 +7,7 @@ import { faAngleDown, faSearch } from '@fortawesome/fontawesome-free-solid';
 import { Link } from 'react-router-dom';
 import { useOutsideClick } from "../helpers";
 import styled, { css } from 'styled-components';
-import {fonts} from "../helpers/styles";
+import {colors, fonts, mixins} from "../helpers/styles";
 
 const Wrapper = styled.header`
   background: ${({ backgroundImage }) => backgroundImage ? `url(${backgroundImage}) rgba(0, 0, 0, 0.4)` : 'none'};
@@ -39,16 +39,9 @@ const Wrapper = styled.header`
     padding-bottom: 5rem;
 
     .tag {
-      display: flex;
-      font-family: ${fonts.secondaryFont};
-      font-size: 1rem;
-      border-radius: 1rem;
-      margin-right: 0.6rem;
-      margin-bottom: 0.6rem;
-      padding: 0.2rem 0.6rem;
-      color: #3C3C3C;      
-      background-color: #F3DFD9;
-      cursor: pointer;
+      ${mixins.tag};
+      color: ${colors.textColor};
+      background-color: ${colors.backgroundAccent};
     }  
   }
   
@@ -131,7 +124,7 @@ const MenuWrapper = styled.div`
     border-radius: 1rem;
     box-shadow: ${props => props.isArticleView ? 'none' : '5px 3px 5px -1px rgb(161, 161, 161)'};
     width: ${props => props.expanded ? '160px' : '48px'};
-    height: ${props => props.expanded ? '180px' : '48px'};
+    height: ${props => props.expanded ? '205px' : '48px'};
     transition: all 0.5s ease;
     z-index: 2;
     ${props => !props.expanded && css`transition-delay: 0.1s;`}
@@ -146,6 +139,7 @@ const MenuWrapper = styled.div`
     }
     
     nav {
+      font-size: 0.95rem;
       margin-top: 2rem;
       margin-left: 1rem;
       opacity: ${props => props.expanded ? '1' : '0'};
@@ -164,7 +158,7 @@ const MenuWrapper = styled.div`
       margin: 0.3rem 0;
       
       @media(max-width: 768px) {
-        font-size: 1.2rem;
+        font-size: ${props => props.expanded ? '1.2rem' : '0'};;
       }
       
       @media(min-width: 768px) {

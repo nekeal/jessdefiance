@@ -1,16 +1,22 @@
 import React from "react";
 import { Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, Button} from "@material-ui/core";
-import styled from "styled-components";
-import {adminDate} from "../helpers/dateUtil";
+import styled, { css } from "styled-components";
+import { adminDate } from "../helpers/dateUtil";
 import { useHistory } from "react-router-dom";
 import {fonts} from "../helpers/styles";
 
 const Container = styled(Card)`
-  max-width: 500px;
   margin-right: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1rem; 
   display: flex;
-  flex-direction: column;
+  flex-direction: ${props => props.mode === "LIST" ? "row" : "column"};
+  max-width: ${props => props.mode === "LIST" ? "100%" : "500px"};
+  ${props => props.mode === "LIST" && css`width: 100%`};
+  
+  .MuiCardMedia-media {
+    width:  ${props => props.mode === "LIST" ? "300px" : "100%"};
+    height: ${props => props.mode === "LIST" && "150px"};
+  }
   
   p {
     margin-bottom: 0.5rem;
@@ -33,12 +39,18 @@ const Container = styled(Card)`
   }
   
   .actions {
-    margin-top: auto;
+    margin-top: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
     font-size: 0.9rem;
+    
+    ${props => props.mode === "LIST" && css`
+      flex-direction: column;
+      align-items: flex-end;
+      margin-left: auto;
+    `};
   }
   
   .publish {
@@ -46,30 +58,30 @@ const Container = styled(Card)`
   }
 `;
 
-function ArticleTileAdmin({ article, onDelete, onPublish, onUnpublish }) {
+function ArticleTileAdmin({ article, onDelete, onPublish, onUnpublish, listView }) {
   const { title, subtitle, images, backgroundImage, tags, published, publishAt, slug } = article;
   const history = useHistory();
 
+  const mode = listView ? "LIST" : "TILE";
+
   return (
-    <Container>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          alt=""
-          height="200"
-          image={images.find(image => image.id === backgroundImage).thumbnails.small}
-          title={title}
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">{title}</Typography>
-          <Typography variant="body2" color="textSecondary" component="p">{subtitle}</Typography>
-          <div className="tags">
-            {
-              tags.map(tag => <div className="tag" key={tag.id}>{ tag.name }</div> )
-            }
-          </div>
-        </CardContent>
-      </CardActionArea>
+    <Container mode={mode}>
+      <CardMedia
+        component="img"
+        alt=""
+        height="200"
+        image={images.find(image => image.id === backgroundImage).thumbnails.small}
+        title={title}
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="h2">{title}</Typography>
+        <Typography variant="body2" color="textSecondary" component="p">{subtitle}</Typography>
+        <div className="tags">
+          {
+            tags.map(tag => <div className="tag" key={tag.id}>{ tag.name }</div> )
+          }
+        </div>
+      </CardContent>
       <CardActions className="actions">
         <div>
           {

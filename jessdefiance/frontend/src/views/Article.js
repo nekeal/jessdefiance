@@ -36,6 +36,13 @@ const ArticleContent = styled.main`
       }
     }
   }
+  
+  .image-caption {
+    width: 100%;
+    text-align: center;
+    margin-top: -0.5rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 function Article() {
@@ -59,9 +66,10 @@ function Article() {
               imgIndex++;
               const img = images.find(image => image.thumbnails.large === node.attribs.src);
               articleImages.push(img);
-              return <img src={img.thumbnails.large} alt="" onClick={() => setGalleryState(
-                { photoIndex: article.images.indexOf(img), isOpen: true })}
-              />
+              return <>
+                <img src={img && img.thumbnails.large} alt="" onClick={() => setGalleryState({ photoIndex: article.images.indexOf(img), isOpen: true })}/>
+                <div className="image-caption">{img.name}</div>
+              </>
             }
           }
         });
@@ -84,10 +92,11 @@ function Article() {
 
 
   const renderArticle = () => {
-    const { title, subtitle, slug, category, content, publishAt, tags, images, backgroundImage } = article;
+    const { title, subtitle, slug, category, content, publishAt, tags, images, backgroundImage: backgroundImageId } = article;
+    const backgroundImage = images.find(image => image.id === backgroundImageId);
     return (
       <>
-        <TopBar title={title} tags={tags} backgroundImage={images.find(image => image.id === backgroundImage).thumbnails.large}/>
+        <TopBar title={title} tags={tags} backgroundImage={backgroundImage && backgroundImage.thumbnails.large}/>
         <ArticleContent>
           <div className="info">
             <div className="publication-date">{articleDate(publishAt)}</div>

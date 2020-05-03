@@ -37,10 +37,10 @@ const Container = styled.div`
     .content-top {
       display: flex;  
       align-items: stretch;
-      max-width: min(90%, 900px);
+      max-width: min(90%, 1000px);
       margin: 0 auto;
       
-      @media(max-width: 900px) {
+      @media(max-width: 1000px) {
         align-items: center;
         flex-direction: column;
       } 
@@ -48,14 +48,14 @@ const Container = styled.div`
       .text {
         margin-left: 2rem;
         
-        @media(max-width: 900px) {
+        @media(max-width: 1000px) {
           margin-left: 0;
         } 
       }
     }
     
     .content-bottom {
-      max-width: min(90%, 900px);
+      max-width: min(90%, 1000px);
       margin: 2rem auto;
       
       p {
@@ -69,7 +69,7 @@ const Container = styled.div`
       margin-top: 0;
       margin-bottom: 1rem;
       
-      @media(max-width: 900px) {
+      @media(max-width: 1000px) {
         text-align: center;
         margin-top: 1.5rem;
       } 
@@ -80,7 +80,7 @@ const Container = styled.div`
       font-size: 1rem;
       margin: 1rem 0;
       
-      @media(max-width: 900px) {
+      @media(max-width: 1000px) {
         text-align: center;
       } 
     }
@@ -88,6 +88,7 @@ const Container = styled.div`
     p {
       margin: 1rem 0;
       font-size: 1.1rem;
+      line-height: 1.5;
     }
     
     a {

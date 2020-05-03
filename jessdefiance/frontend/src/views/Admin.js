@@ -1,12 +1,11 @@
 import React, {useEffect, useReducer} from 'react';
-import { Button, Snackbar } from "@material-ui/core";
+import { Button, Snackbar, FormControlLabel, Switch, FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import styled from "styled-components";
 import {deletePost, getPosts, partialUpdatePost} from "../helpers/postsApi";
 import ArticleTileAdmin from "../components/ArticleTileAdmin";
 import MuiAlert from '@material-ui/lab/Alert';
 import { useHistory } from "react-router-dom";
 import ConfirmationDialog from "../components/ConfirmationDialog";
-import {MuiPickersUtilsProvider} from "@material-ui/pickers";
 
 const Container = styled.div`
   max-width: 1600px;
@@ -25,6 +24,12 @@ const Container = styled.div`
   .articles {
     display: flex;
     flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  
+  .sort-select {
+    width: 8rem;
+    margin-left: 0.5rem;
   }
 `;
 
@@ -39,7 +44,9 @@ const initialState = {
     open: false,
     onConfirm: () => {},
     onDecline: () => {}
-  }
+  },
+  listView: false,
+  sortMode: "PUB_DATE"
 };
 
 function reducer(state, action) {
@@ -59,14 +66,26 @@ function reducer(state, action) {
       const { onConfirm, onDecline } = payload;
       return { ...state, confirmationDialog: { open: true, onConfirm, onDecline } };
     case "CLOSE_CONFIRMATION_DIALOG":
-      return { ...state, confirmationDialog: { open: false } }
+      return { ...state, confirmationDialog: { open: false } };
+    case "SWITCH_LIST_VIEW":
+      return { ...state, listView: !state.listView };
+    case "CHANGE_SORT_MODE":
+      const { articles } = state;
+      const sortedArticles = articles.sort((a, b) => {
+        if(payload === "PUB_DATE") return new Date(b.publishAt) - new Date(a.publishAt);
+        else if(payload === "ADD_DATE") return new Date(b.createdAt) - new Date(a.createdAt);
+        else if(payload === "NAME") return (a.title < b.title) ? -1 : 1;
+      });
+      return { ...state, articles, sortMode: payload };
+    default:
+      return { ...state };
   }
 }
 
 function Admin() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const { articles, operationInfo, confirmationDialog } = state;
+  const { articles, operationInfo, confirmationDialog, listView, sortMode } = state;
 
   const history = useHistory();
 
@@ -112,10 +131,28 @@ function Admin() {
       <div className="panel-actions">
         <Button variant="contained" color="primary" onClick={() => history.push("/panel/article/add")}>Dodaj artykuł</Button>
         <Button variant="contained" color="secondary" onClick={() => history.push("/")}>Wróć do strony głównej</Button>
+        <FormControlLabel
+          control={<Switch checked={listView} onChange={() => dispatch({ type: "SWITCH_LIST_VIEW"})} name="listView" />}
+          label="Widok listy"
+        />
+        <FormControl className="sort-select">
+          <InputLabel id="sortByLabel">Sortuj po</InputLabel>
+          <Select
+            labelId="sortByLabel"
+            id="sortBy"
+            value={sortMode}
+            onChange={e => dispatch({ type: "CHANGE_SORT_MODE", payload: e.target.value })}
+          >
+            <MenuItem value="NAME">Nazwa</MenuItem>
+            <MenuItem value="PUB_DATE">Data publikacji</MenuItem>
+            <MenuItem value="ADD_DATE">Data dodania</MenuItem>
+          </Select>
+        </FormControl>
+
       </div>
       <div className="articles">
         {
-          articles.map(article => <ArticleTileAdmin article={article} onDelete={removePostInit} onPublish={publishNow} onUnpublish={unpublish} key={article.slug}/> )
+          articles.map(article => <ArticleTileAdmin article={article} onDelete={removePostInit} onPublish={publishNow} onUnpublish={unpublish} key={article.slug} listView={listView}/> )
         }
       </div>
       <ConfirmationDialog
