@@ -311,17 +311,22 @@ function AdminArticle() {
     if(state.article.slug) {
       updatePost(post)
         .then(() => {
-          redirect
-            ? history.push("/panel")
-            : dispatch({ type: "SET_OPERATION_INFO", payload: { type: "success", message: "Pomyślnie zapisano zmiany" } })
+          if(redirect) {
+            history.push("/panel");
+          } else {
+            dispatch({ type: "SET_OPERATION_INFO", payload: { type: "success", message: "Pomyślnie zapisano zmiany" } });
+          }
         })
         .catch(() => dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Wystąpił błąd przy zapisywaniu zmian"  } }));
     } else {
       addPost(post)
-        .then(() => {
-          redirect
-            ? history.push("/panel")
-            : dispatch({ type: "SET_OPERATION_INFO", payload: { type: "success", message: "Pomyślnie dodano post" } })
+        .then(createdPost => {
+          if(redirect) {
+            history.push("/panel")
+          } else {
+            history.push(`/panel/article/${createdPost.slug}`);
+            dispatch({ type: "SET_OPERATION_INFO", payload: { type: "success", message: "Pomyślnie dodano post" } });
+          }
         })
         .catch(() => dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Wystąpił błąd przy dodawaniu posta"  } }))
     }
@@ -353,15 +358,20 @@ function AdminArticle() {
   };
 
   const setBackgroundImage = imgId => {
-    partialUpdatePost(id, { background_image: imgId })
-      .then(() => {
-        setValue("backgroundImage", imgId);
-        dispatch({ type: "SET_OPERATION_INFO", payload: { type: "success", message: "Udało się zmienić zdjęcie główne" } });
-        dispatch({ type: "SET_BACKGROUND_IMAGE" });
-      })
-      .catch(() => {
-        dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Nie udało się zmienić zdjęcia głównego" } });
-      });
+    if(!id) {
+      setValue("backgroundImage", imgId);
+      dispatch({ type: "SET_BACKGROUND_IMAGE" });
+    } else {
+      partialUpdatePost(id, { background_image: imgId })
+        .then(() => {
+          setValue("backgroundImage", imgId);
+          dispatch({ type: "SET_OPERATION_INFO", payload: { type: "success", message: "Udało się zmienić zdjęcie główne" } });
+          dispatch({ type: "SET_BACKGROUND_IMAGE" });
+        })
+        .catch(() => {
+          dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "Nie udało się zmienić zdjęcia głównego" } });
+        });
+    }
   };
 
   const insertImage = index => {
