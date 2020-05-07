@@ -65,6 +65,9 @@ function Article() {
             if(node.name === "img") {
               imgIndex++;
               const img = images.find(image => image.thumbnails.large === node.attribs.src);
+
+              if(!img) return <></>;
+
               articleImages.push(img);
               return <>
                 <img src={img && img.thumbnails.large} alt="" onClick={() => setGalleryState({ photoIndex: article.images.indexOf(img), isOpen: true })}/>
