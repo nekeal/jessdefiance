@@ -29,7 +29,7 @@ class Tag(models.Model):
 
 class PostImage(models.Model):
     name = models.CharField(max_length=100, blank=True)
-    image = ThumbnailerImageField(upload_to='images')
+    image = ThumbnailerImageField(upload_to='images', max_length=500)
 
 
 class Post(models.Model):
