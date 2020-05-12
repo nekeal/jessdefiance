@@ -69,7 +69,15 @@ function Article() {
             console.log("node", node, "index", index);
             if(node.name === "img") {
               imgIndex++;
-              const img = images.find(image => image.thumbnails.large === node.attribs.src);
+              const img = images.find(image => {
+                console.log("image", image);
+                console.log("node", node);
+                console.log("image.thumbnails.large", image.thumbnails.large);
+                console.log("node.attribs.src", node.attribs.src);
+                console.log("matching?", image.thumbnails.large === node.attribs.src);
+
+                return image.thumbnails.large === node.attribs.src;
+              });
               console.log("img found", img);
               if(!img) return <></>;
 
