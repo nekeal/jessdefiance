@@ -60,12 +60,17 @@ function Article() {
         let imgIndex = -1;
         const { images, backgroundImage } = article;
         articleImages.push(images.find(image => image.id === backgroundImage));
+        console.log("JESSICA, TUTAJ!!!! XD^XD");
+        console.log("article content", article.content);
+        console.log("images", images);
+        console.log("backgroundImage", backgroundImage);
         const parsedContent = ReactHtmlParser(article.content, {
           transform: (node, index) => {
+            console.log("node", node, "index", index);
             if(node.name === "img") {
               imgIndex++;
               const img = images.find(image => image.thumbnails.large === node.attribs.src);
-
+              console.log("img found", img);
               if(!img) return <></>;
 
               articleImages.push(img);
