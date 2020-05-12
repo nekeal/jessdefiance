@@ -87,6 +87,7 @@
     "terser-webpack-plugin": "2.3.4",
     "ts-pnp": "1.1.5",
     "url-loader": "2.3.0",
+    "url-parse": "^1.4.7",
     "webpack": "4.41.5",
     "webpack-bundle-tracker": "^0.4.3",
     "webpack-dev-server": "3.10.1",

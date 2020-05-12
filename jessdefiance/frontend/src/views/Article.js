@@ -10,6 +10,7 @@ import ReactHtmlParser from 'react-html-parser';
 import { articleDate } from "../helpers/dateUtil";
 import {mixins} from "../helpers/styles";
 import {fonts} from "../helpers/styles";
+import urlParse from "url-parse";
 
 const ArticleContent = styled.main`
   width: 80%;
@@ -57,33 +58,20 @@ function Article() {
   useEffect(() => {
     getPost(id)
       .then(article => {
-        let imgIndex = -1;
+        let imgIndex = 0;
         const { images, backgroundImage } = article;
         articleImages.push(images.find(image => image.id === backgroundImage));
-        console.log("JESSICA, TUTAJ!!!! XD^XD");
-        console.log("article content", article.content);
-        console.log("images", images);
-        console.log("backgroundImage", backgroundImage);
         const parsedContent = ReactHtmlParser(article.content, {
           transform: (node, index) => {
-            console.log("node", node, "index", index);
             if(node.name === "img") {
               imgIndex++;
-              const img = images.find(image => {
-                console.log("image", image);
-                console.log("node", node);
-                console.log("image.thumbnails.large", image.thumbnails.large);
-                console.log("node.attribs.src", node.attribs.src);
-                console.log("matching?", image.thumbnails.large === node.attribs.src);
-
-                return image.thumbnails.large === node.attribs.src;
-              });
-              console.log("img found", img);
+              const img = images.find(image => urlParse(image.thumbnails.large).pathname === urlParse(node.attribs.src).pathname);
               if(!img) return <></>;
 
               articleImages.push(img);
+              const ind = imgIndex;
               return <>
-                <img src={img && img.thumbnails.large} alt="" onClick={() => setGalleryState({ photoIndex: article.images.indexOf(img), isOpen: true })}/>
+                <img src={img.thumbnails.large} alt="" onClick={() => setGalleryState({ photoIndex: ind, isOpen: true })}/>
                 <div className="image-caption">{img.name}</div>
               </>
             }
