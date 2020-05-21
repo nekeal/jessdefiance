@@ -15,9 +15,19 @@ export function getPosts(params) {
   const query = queryString.stringify(params);
 
   return axios
-    .get(`/api/posts/?expand=images,tags&${query}`)
+    .get(`/api/posts/?expand=images,tags&ordering=-publish_at&${query}`)
     .then(response => {
       return response.data.results.map(fromResponse);
+    });
+}
+
+export function adminGetPosts(params, ordering = "-publish_at") {
+  const query = queryString.stringify(params);
+
+  return axios
+    .get(`/api/posts/?expand=images,tags&ordering=${ordering}&${query}`)
+    .then(response => {
+      return { articles: response.data.results.map(fromResponse), count: response.data.count };
     });
 }
 

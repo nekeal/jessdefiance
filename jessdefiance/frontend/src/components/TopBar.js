@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { useOutsideClick } from "../helpers";
 import styled, { css } from 'styled-components';
 import {colors, fonts, mixins} from "../helpers/styles";
+import { isLoggedIn } from "../helpers/authApi";
 
 const Wrapper = styled.header`
   background: ${({ backgroundImage }) => backgroundImage ? `url(${backgroundImage}) rgba(0, 0, 0, 0.4)` : 'none'};
@@ -274,6 +275,7 @@ function TopBar({ backgroundImage, title, tags }) {
                 <Link to="/articles/trends">#trends</Link>
                 <Link to="/articles/deeper">#deeper</Link>
                 <Link to="/contact">Kontakt</Link>
+                { isLoggedIn() && <Link to="/panel">Panel</Link> }
               </nav>
             </div>
           </MenuWrapper>

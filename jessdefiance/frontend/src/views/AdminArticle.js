@@ -39,6 +39,7 @@ import MuiAlert from "@material-ui/lab/Alert/Alert";
 import {mixins} from "../helpers/styles";
 import ConfirmationDialog from "../components/ConfirmationDialog";
 import {fonts} from "../helpers/styles";
+import slugify from "slugify";
 
 const Container = styled.main`    
   max-width: 1200px;
@@ -64,10 +65,6 @@ const Container = styled.main`
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    
-    button {
-      margin-bottom: 0.5rem;
-    }
   }
   
   .ql-toolbar {
@@ -163,7 +160,7 @@ const Container = styled.main`
   
 
   .editor-container {
-        margin: 2rem 0 6rem;
+      margin: 2rem 0 6rem;
   }
       
   .editor {
@@ -292,9 +289,15 @@ function AdminArticle() {
     }
   }, [id]);
 
-  const onSubmit = (data, event, redirect) => {
+  const submitAction = {
+    NOTHING: "NOTHING",
+    GOTO_LIST: "GOTO_LIST",
+    GOTO_POST: "GOTO_POST"
+  };
+
+  const onSubmit = (data, event, action = submitAction.NOTHING) => {
     const { title, subtitle, category, publishAt, published, backgroundImage } = data;
-    const slug = state.article.slug || title.toLowerCase().replace(/[^a-z]+/g,"-");
+    const slug = state.article.slug || slugify(title, { remove: /[\\/*+~.()'"!:@]/g });
 
     if(!backgroundImage) {
       dispatch({ type: "SET_OPERATION_INFO", payload: { type: "warning", message: "O nieeee Jessi, tym razem nie wypierdolisz bloga, ustaw zdjęcie główne XD^XD"  } });
@@ -311,8 +314,10 @@ function AdminArticle() {
     if(state.article.slug) {
       updatePost(post)
         .then(() => {
-          if(redirect) {
+          if(action === submitAction.GOTO_LIST) {
             history.push("/panel");
+          } else if(action === submitAction.GOTO_POST) {
+            history.push(`/article/${id}`)
           } else {
             dispatch({ type: "SET_OPERATION_INFO", payload: { type: "success", message: "Pomyślnie zapisano zmiany" } });
           }
@@ -321,8 +326,10 @@ function AdminArticle() {
     } else {
       addPost(post)
         .then(createdPost => {
-          if(redirect) {
-            history.push("/panel")
+          if(action === submitAction.GOTO_LIST) {
+            history.push("/panel");
+          } else if(action === submitAction.GOTO_POST) {
+            history.push(`/article/${createdPost.slug}`);
           } else {
             history.push(`/panel/article/${createdPost.slug}`);
             dispatch({ type: "SET_OPERATION_INFO", payload: { type: "success", message: "Pomyślnie dodano post" } });
@@ -459,11 +466,14 @@ function AdminArticle() {
             </div>
 
             <div className="form-submit">
-              <Button variant="contained" color="primary" type="submit">
+              <Button color="primary" type="submit">
                 Zapisz zmiany
               </Button>
-              <Button variant="contained" color="secondary" type="submit" onClick={e => { e.preventDefault(); onSubmit(getValues(), e,true); }}>
+              <Button color="secondary" type="submit" onClick={e => { e.preventDefault(); onSubmit(getValues(), e, submitAction.GOTO_LIST); }}>
                 Zapisz i wróć do listy
+              </Button>
+              <Button color="secondary" type="submit" onClick={e => { e.preventDefault(); onSubmit(getValues(), e, submitAction.GOTO_POST); }}>
+                Zapisz i przejdź do posta
               </Button>
             </div>
 

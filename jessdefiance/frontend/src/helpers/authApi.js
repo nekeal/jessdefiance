@@ -1,13 +1,17 @@
 import axios from "axios";
 
+export function isLoggedIn() {
+  return !!localStorage.getItem("access-token");
+}
+
 export function login(username, password) {
   return axios
-    .post('/auth/jwt/create/', {
+    .post("/auth/jwt/create/", {
       username, password
     })
     .then(response => {
-      localStorage.setItem('access-token', response.data.access);
-      localStorage.setItem('refresh-token', response.data.refresh);
+      localStorage.setItem("access-token", response.data.access);
+      localStorage.setItem("refresh-token", response.data.refresh);
     })
     .catch(error => {
       throw error.response.data;
@@ -15,6 +19,6 @@ export function login(username, password) {
 }
 
 export function logout() {
-  localStorage.removeItem('access-token');
-  localStorage.removeItem('refresh-token');
+  localStorage.removeItem("access-token");
+  localStorage.removeItem("refresh-token");
 }
