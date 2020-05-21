@@ -36,9 +36,12 @@ function ArticleTile() {
         <Link to="/about"><img src={jess} alt=""/></Link>
       </div>
       <div className="content">
-        <p>Z tej strony Jess, stylista mody i pasjonatka sztuki. W zasadzie pasjonatka w wielu dziedzinach.</p>
-        <p>Będziemy tutaj bawić się modą, poznawać i starać się ją zrozumieć. Niezależnie od tego co już wiesz i jak bardzo liczy się dla Ciebie to, z czym się ona wiąże, powinno się znaleźć tutaj coś dla Ciebie. Zaczniemy od podstaw, ale regularnie będziemy zaglądać też do świata high fashion.</p>
-        <p>A ponieważ blog ten jest miejscem dla nas wszystkich, to zachęcam Cię do tego, byś aktywnie uczestniczył(a) w tym co się tutaj dzieje, bo to będzie dla mnie największa nagroda!</p>
+        <p>Hola!</p>
+        <p>Z tej strony Jess – stylistka i pasjonatka sztuki. W zasadzie – pasjonatka świata oraz ludzi.</p>
+        <p>Ten blog powstał po to, by w czeluściach internetu istniało miejsce dla każdej i każdego z Was. Będziemy tutaj bawić się modą, poznawać i starać się ją zrozumieć.</p>
+        <p>Niezależnie od tego, z jakim zasobem wiedzy przychodzisz, powinno się tutaj znaleźć coś dla Ciebie. Przejdziemy przez podstawy, ale regularnie będziemy sięgać też do świata high fashion.</p>
+        <p>A ponieważ to miejsce powstało dla Ciebie, to największą nagrodą dla mnie będzie, jeśli od czasu do czasu zostawisz tutaj coś po sobie.</p>
+
         <Link to="/about">Czytaj więcej</Link>
       </div>
     </AboutWrapper>
