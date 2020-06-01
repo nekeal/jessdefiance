@@ -28,7 +28,7 @@ const AboutWrapper = styled.main`
 `;
 
 
-function ArticleTile() {
+function AboutTile() {
   return (
     <AboutWrapper>
       {/*<div className="title">O mnie</div>*/}
@@ -49,4 +49,4 @@ function ArticleTile() {
   );
 }
 
-export default ArticleTile;
+export default AboutTile;

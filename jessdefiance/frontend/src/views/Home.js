@@ -115,6 +115,13 @@ const Container = styled.div`
 
   .tag {
     ${mixins.tag};
+    color: ${colors.shadowColor};
+    background-color: ${colors.backgroundColor};
+    
+    &--selected {
+      background-color: ${colors.shadowColor};
+      color: ${colors.backgroundColor};
+    }
   }  
   
   .about-header {
