@@ -5,8 +5,9 @@ from .base import *
 
 env_path = Path('.env')
 load_dotenv(dotenv_path=env_path)
+
 DEBUG = False
-SECRET_KEY = os.environ.get('SECRET_KEY', '')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '')
 ALLOWED_HOSTS = ['*']
 
 
