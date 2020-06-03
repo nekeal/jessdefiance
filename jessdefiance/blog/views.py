@@ -30,10 +30,12 @@ class PostViewSet(viewsets.ModelViewSet):
     ordering_fields = ['title', 'publish_at', 'created_at']
     filterset_class = PostFilterSet
     anonymous_user_omit_fields = ['created_at', 'updated_at', 'published']
+
     def get_serializer(self, *args, **kwargs):
         omit_fields = self.anonymous_user_omit_fields if not self.request.user.is_staff else []
         return super().get_serializer(*args, **kwargs, omit=omit_fields)
-
+    def paginate_queryset(self, queryset):
+        return super(PostViewSet, self).paginate_queryset(queryset)   
     def get_queryset(self) -> 'QuerySet[Post]':
         if self.request.user.is_staff:
             return Post.objects.order_by('-publish_at')

@@ -16,6 +16,6 @@ from django.core.wsgi import get_wsgi_application
 env_path = Path('.env')
 load_dotenv(dotenv_path=env_path)
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'jessdefiance.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'jessdefiance.settings.local')
 
 application = get_wsgi_application()
