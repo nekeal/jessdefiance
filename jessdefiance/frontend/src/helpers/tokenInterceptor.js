@@ -17,7 +17,7 @@ export default history => {
 
     // Logout user if token refresh didn't work or there is no refresh-token
     if (error.config.url === '/auth/jwt/refresh/' || !refreshToken) {
-      history.push("/login");
+      history.push("/");
       localStorage.removeItem('access-token');
       localStorage.removeItem('refresh-token');
 

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { useOutsideClick } from "../helpers";
 import styled, { css } from 'styled-components';
 import {colors, fonts, mixins} from "../helpers/styles";
+import { isLoggedIn } from "../helpers/authApi";
 
 const Wrapper = styled.header`
   background: ${({ backgroundImage }) => backgroundImage ? `url(${backgroundImage}) rgba(0, 0, 0, 0.4)` : 'none'};
@@ -33,15 +34,23 @@ const Wrapper = styled.header`
   .tags { 
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    max-width: 90%;
+    //justify-content: center;
+    //max-width: 90%;
     margin: 0 auto;
-    padding-bottom: 5rem;
+    //padding-bottom: 5rem;
+    
+    padding-bottom: 1rem;
+    padding-top: 4rem;
+    justify-content: flex-end;
+    max-width: 1400px;
+    width: 80%;
 
     .tag {
       ${mixins.tag};
-      color: ${colors.textColor};
-      background-color: ${colors.backgroundAccent};
+      color: ${colors.backgroundColor};
+      background: none;
+      // color: ${colors.textColor};
+      // background-color: ${colors.backgroundAccent};
     }  
   }
   
@@ -139,7 +148,7 @@ const MenuWrapper = styled.div`
     }
     
     nav {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       margin-top: 2rem;
       margin-left: 1rem;
       opacity: ${props => props.expanded ? '1' : '0'};
@@ -162,7 +171,7 @@ const MenuWrapper = styled.div`
       }
       
       @media(min-width: 768px) {
-        margin: 0.3rem 0.8rem;
+        margin: 0.3rem 1.1rem;
       }
     }    
   }
@@ -274,6 +283,7 @@ function TopBar({ backgroundImage, title, tags }) {
                 <Link to="/articles/trends">#trends</Link>
                 <Link to="/articles/deeper">#deeper</Link>
                 <Link to="/contact">Kontakt</Link>
+                { isLoggedIn() && <Link to="/panel">Panel</Link> }
               </nav>
             </div>
           </MenuWrapper>

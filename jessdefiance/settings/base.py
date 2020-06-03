@@ -1,3 +1,5 @@
+import os
+
 from datetime import timedelta
 from pathlib import Path
 
@@ -95,9 +97,9 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR.parent.joinpath('public')
+STATIC_ROOT = BASE_DIR.joinpath('public')
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR.parent.joinpath('media')
+MEDIA_ROOT = BASE_DIR.joinpath('media')
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',

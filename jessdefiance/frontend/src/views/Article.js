@@ -11,6 +11,9 @@ import { articleDate } from "../helpers/dateUtil";
 import {mixins} from "../helpers/styles";
 import {fonts} from "../helpers/styles";
 import urlParse from "url-parse";
+import { Fab } from "@material-ui/core";
+import { Edit as EditIcon } from "@material-ui/icons";
+import { isLoggedIn } from "../helpers/authApi";
 
 const ArticleContent = styled.main`
   width: 80%;
@@ -43,6 +46,12 @@ const ArticleContent = styled.main`
     text-align: center;
     margin-top: -0.5rem;
     margin-bottom: 1rem;
+  }
+  
+  .MuiFab-root {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
   }
 `;
 
@@ -138,6 +147,12 @@ function Article() {
   return (
     <>
       { article && renderArticle()}
+      {
+        isLoggedIn() &&
+        <Fab href={`/panel/article/${id}`} color="secondary" style={{ position: "fixed", bottom: "2rem", right: "2rem" }}>
+          <EditIcon/>
+        </Fab>
+      }
     </>
   );
 }

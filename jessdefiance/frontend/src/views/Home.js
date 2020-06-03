@@ -115,6 +115,13 @@ const Container = styled.div`
 
   .tag {
     ${mixins.tag};
+    color: ${colors.shadowColor};
+    background-color: ${colors.backgroundColor};
+    
+    &--selected {
+      background-color: ${colors.shadowColor};
+      color: ${colors.backgroundColor};
+    }
   }  
   
   .about-header {
@@ -171,7 +178,7 @@ function Home() {
   useEffect(() => {
     getPosts({ limit: paginateBy, offset: 0, category: category && category.toUpperCase(), search, tag: selectedTags })
       .then(articles => {
-        setOffset(paginateBy);
+        setOffset(articles.length);
         if(!articles) {
           setFetchingState(articlesState.ALL_LOADED);
         } else {
@@ -185,9 +192,9 @@ function Home() {
   window.onscroll = debounce(() => {
     if (window.innerHeight + document.documentElement.scrollTop >= 0.7 * document.documentElement.offsetHeight && fetchingState === articlesState.IDLE) {
       setFetchingState(articlesState.LOADING);
-      getPosts({ limit: paginateBy, offset: 9, category: category && category.toUpperCase(), search, tag: selectedTags })
+      getPosts({ limit: paginateBy, offset: offset, category: category && category.toUpperCase(), search, tag: selectedTags })
         .then(newArticles => {
-          setOffset(offset + paginateBy);
+          setOffset(offset + newArticles.length);
           if(newArticles.length < paginateBy) {
             setFetchingState(articlesState.ALL_LOADED);
           } else {
