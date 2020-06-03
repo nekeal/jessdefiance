@@ -12,3 +12,4 @@ djoser==2.0.3
 djangorestframework-simplejwt==4.4.0
 easy-thumbnails==2.7
 django-webpack-loader==0.7.0
+django-dbbackup==3.3.0
