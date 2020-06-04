@@ -1,0 +1,7 @@
+- name: Create deployer user and install packages
+  hosts: web
+  user: root
+  gather_facts: no
+  roles:
+    - authorization
+    - base
