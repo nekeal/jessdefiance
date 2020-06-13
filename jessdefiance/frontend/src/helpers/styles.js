@@ -62,7 +62,8 @@ export const mixins = {
     }
     
     img {
-      width: 80%;
+      max-width: 80%;
+      max-height: 90vh;
       border-radius: 1rem;
       box-shadow: 7px 15px 3px 0px #CBB7B0; 
       margin: 2rem auto;
