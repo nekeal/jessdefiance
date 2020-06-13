@@ -1,5 +1,4 @@
 import dj_database_url
-from pathlib import Path
 from dotenv import load_dotenv
 
 from .base import *
@@ -8,7 +7,7 @@ env_path = Path('.env')
 load_dotenv(dotenv_path=env_path)
 
 DEBUG = False
-SECRET_KEY = os.environ.get('SECRET_KEY', '')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '')
 ALLOWED_HOSTS = ['*']
 
 
@@ -52,3 +51,5 @@ DATABASES['default'].update(db_from_env)
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'public')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
