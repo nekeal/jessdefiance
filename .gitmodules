@@ -1,0 +1,3 @@
+[submodule "deployment/ansible/roles"]
+	path = deployment/ansible/roles
+	url = git@github.com:nekeal/ansible-django-docker-roles.git

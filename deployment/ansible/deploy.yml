@@ -1,0 +1,8 @@
+- name: Apply common configuration to server
+  hosts: web
+  user: "{{ deployer_user }}"
+  gather_facts: yes
+  roles:
+    - nginx
+    - postgres
+    - app
