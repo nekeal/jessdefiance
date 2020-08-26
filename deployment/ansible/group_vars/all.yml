@@ -1,0 +1,32 @@
+postgresql_version: "12"
+postgresql_data_dir: "/var/lib/postgresql/{{ postgresql_version }}/main"
+postgresql_bin_path: "/usr/lib/postgresql/{{ postgresql_version }}/bin"
+postgresql_config_path: "/etc/postgresql/{{ postgresql_version }}/main"
+postgresql_daemon: "postgresql@{{ postgresql_version }}-main"
+postgresql_packages:
+  - postgresql
+  - postgresql-contrib
+  - libpq-dev
+
+users_groups:
+  - docker
+
+users:
+  - username: nekeal
+    groups:
+      - sudo
+      - docker
+    ssh_keys:
+      - nekeal
+  - username: krzempekk
+    groups:
+      - docker
+  - username: "{{ _jessdefiance_prod }}"
+    uid: 1100
+    ssh_keys:
+      - nekeal
+  - username: deployer
+    groups:
+      - docker
+    ssh_keys:
+      - nekeal

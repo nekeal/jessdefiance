@@ -1,0 +1,17 @@
+- name: Deploy app to server
+  hosts: prod
+  remote_user: deployer
+  become: yes
+  pre_tasks:
+    - name: Install zsh for users
+      include_role:
+        name: viasite-ansible.zsh
+      loop: "{{ users | map(attribute='username') | list }}"
+      loop_control:
+        loop_var: zsh_user
+  roles:
+    - nekeal.users
+    - geerlingguy.postgresql
+    - nekeal.nginx
+    - nekeal.certbot
+    - nekeal.docker_app
